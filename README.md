@@ -1,10 +1,11 @@
 # no-show-ml-demo
 
-A 25-minute, pre-built notebook demo for a technical breakout talk on **developing AI/ML in a
+A 32-minute, pre-built notebook demo for a technical breakout talk on **developing AI/ML in a
 health system**. One prediction problem everybody understands, predicting outpatient no-shows,
-walked end to end: synthetic data, a time-based split, a baseline, honest evaluation, a planted
-target-leakage trap, a bias check, and a drift batch that hands off to the governance half of
-the talk.
+walked end to end: synthetic data, a time-based split, a baseline, a look under the hood of
+`fit()` (logistic regression by hand in NumPy, the same loop in PyTorch, a small neural network
+that loses to the tree), honest evaluation with hand-counted metrics, a planted target-leakage
+trap, a bias check, and a drift batch that hands off to the governance half of the talk.
 
 Everything is synthetic and generated in the first cell. No PHI, no downloads, nothing to break
 on a managed laptop.
@@ -37,7 +38,7 @@ python tools/run_backup.py          # execute it end to end and refresh the back
 jupyter lab notebooks/no_show_classic_ml.ipynb
 ```
 
-The whole notebook executes in well under a minute. Before presenting, run `run_backup.py` on
+The whole notebook executes in about a minute on CPU; torch is the CPU build. Before presenting, run `run_backup.py` on
 the machine you will present from so the backup matches the installed library versions.
 
 ## What the numbers land on (seed 42)
@@ -47,6 +48,8 @@ the machine you will present from so the backup matches the installed library ve
 | Base rate / "everyone shows up" accuracy | 18% / 82% |
 | Honest model accuracy (logistic, boosted trees) | 83%, 83% |
 | Honest ROC AUC | 0.76 |
+| Logistic regression by hand vs scikit-learn, ROC AUC | 0.758 vs 0.758 |
+| Neural network vs boosted trees, ROC AUC | 0.73 vs 0.76 |
 | With the leaked `reminder_confirmed` column | 96% accuracy |
 | Recall at threshold 0.30, portal vs no-portal patients | 52% vs 27% |
 | Share flagged, validation period vs drifted batch | 17% vs 45% |

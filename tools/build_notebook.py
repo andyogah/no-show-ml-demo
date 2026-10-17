@@ -29,7 +29,7 @@ md("""
 # Developing AI/ML: predicting outpatient no-shows, end to end
 
 **What this notebook is.** One prediction problem everyone in the building understands,
-walked from raw rows to a deployed-ish model in about 25 minutes. The data is synthetic and
+walked from raw rows to a deployed-ish model in about 32 minutes. The data is synthetic and
 generated in the first cell, so there is no PHI, no download, and nothing to break on a
 managed laptop.
 
@@ -40,13 +40,14 @@ managed laptop.
 | 1. Generate the data | 2 | The step that takes 20 seconds here and four months in real life |
 | 2. Look at the data | 3 | The base rate. Plant the 82% number now |
 | 3. Frame the prediction | 2 | Split by time, not at random |
-| 4. Train a baseline | 3 | "Is 84% good?" |
-| 5. Evaluate properly | 5 | The clinic picks the threshold, not the model |
+| 4. Train a baseline | 3 | "Is 83% good?" |
+| 4b. What `fit()` is doing | 6 | Training is four lines in a loop; deep is not automatically better |
+| 5. Evaluate properly | 6 | The clinic picks the threshold, not the model |
 | 6. Feature importance and the trap | 4 | Target leakage. The data engineer is worth more than the model |
 | 7. Check for bias | 3 | The model learned the process, not the patient |
 | 8. Ship it, sort of | 3 | Who is watching this number in month three? |
 
-If you run long, cut block 7. Blocks 5, 6 and 8 are the talk.
+If you run long, cut block 7 first, then the neural-network cell in 4b. Blocks 5, 6 and 8 are the talk.
 """)
 
 code("""
@@ -248,7 +249,7 @@ print(f"test:  {len(test):,} appointments from   {CUTOFF.date()}  (no-show {y_te
 
 def make_pipeline(model, categorical=CATEGORICAL):
     prep = ColumnTransformer(
-        [("cat", OneHotEncoder(handle_unknown="ignore"), categorical)],
+        [("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical)],
         remainder="passthrough",
     )
     return Pipeline([("prep", prep), ("model", model)])
@@ -277,12 +278,159 @@ print(f"{'Everyone shows up':24s} accuracy on new appointments: {1 - y_test.mean
 
 # --------------------------------------------------------------------------------------
 md("""
-## Block 5. Evaluate properly (5 min)
+## Block 4b. What `fit()` is actually doing (6 min)
 
-Accuracy hides the thing we care about. Look at the two kinds of mistakes separately.
+`fit()` is not magic. For logistic regression it is ten lines: a prediction, a loss, a gradient,
+an update, in a loop. Here it is in NumPy on the same data, then the same loop in PyTorch, then
+a small neural network to see whether "deep" buys anything here.
+
+First, the same preprocessing as a plain numeric matrix: one-hot the two text columns, then
+scale every column to mean 0 and spread 1 so the loop converges.
+""")
+
+code("""
+prep = logreg.named_steps["prep"]                      # the fitted one-hot step from block 4
+A_train = np.asarray(prep.transform(X_train), dtype=float)
+A_test = np.asarray(prep.transform(X_test), dtype=float)
+mu, sd = A_train.mean(axis=0), A_train.std(axis=0) + 1e-8
+A_train, A_test = (A_train - mu) / sd, (A_test - mu) / sd
+yt, ye = y_train.to_numpy().astype(float), y_test.to_numpy()
+print(f"{A_train.shape[0]:,} rows x {A_train.shape[1]} numeric columns")
+""")
+
+md("""
+### Logistic regression by hand
+""")
+
+code("""
+def sigmoid(z):
+    return 1.0 / (1.0 + np.exp(-z))
+
+
+def bce_loss(y, p, eps=1e-8):
+    p = np.clip(p, eps, 1 - eps)
+    return -np.mean(y * np.log(p) + (1 - y) * np.log(1 - p))
+
+
+w, b, lr = np.zeros(A_train.shape[1]), 0.0, 0.5
+for step in range(1, 301):
+    p = sigmoid(A_train @ w + b)            # 1. predict
+    loss = bce_loss(yt, p)                  # 2. how wrong are we
+    dz = (p - yt) / len(yt)                 # 3. which direction reduces the loss
+    w -= lr * (A_train.T @ dz)              # 4. move the weights a little that way
+    b -= lr * dz.sum()
+    if step in (1, 10, 50, 100, 300):
+        print(f"step {step:>3}  loss {loss:.4f}")
+
+p_numpy = sigmoid(A_test @ w + b)
+p_sklearn = logreg.predict_proba(X_test)[:, 1]
+print(f"\\nROC AUC  by hand: {roc_auc_score(ye, p_numpy):.3f}   scikit-learn: {roc_auc_score(ye, p_sklearn):.3f}")
+print(f"accuracy by hand: {accuracy_score(ye, p_numpy >= 0.5):.1%}   scikit-learn: {accuracy_score(ye, p_sklearn >= 0.5):.1%}")
+""")
+
+md("""
+> **Talking point.** That loop *is* training. Every model you will hear about this year,
+> including the large language models, is some version of those four lines run a few
+> billion times on more data. The library call in block 4 did exactly this.
+""")
+
+md("""
+### The same loop in PyTorch
+
+PyTorch computes step 3, the gradient, for you. Everything else is recognisable.
+""")
+
+code("""
+import torch
+import torch.nn as nn
+
+torch.manual_seed(RANDOM_SEED)
+Xt = torch.tensor(A_train, dtype=torch.float32)
+Yt = torch.tensor(yt, dtype=torch.float32).unsqueeze(1)
+Xe = torch.tensor(A_test, dtype=torch.float32)
+
+
+def train_torch(model, epochs, lr, log_at=()):
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    criterion = nn.BCEWithLogitsLoss()
+    for epoch in range(1, epochs + 1):
+        optimizer.zero_grad()
+        loss = criterion(model(Xt), Yt)     # 1 + 2: predict, how wrong
+        loss.backward()                     # 3: gradient, done for you
+        optimizer.step()                    # 4: move the weights
+        if epoch in log_at:
+            print(f"epoch {epoch:>3}  loss {loss.item():.4f}")
+    with torch.no_grad():
+        return torch.sigmoid(model(Xe)).squeeze(1).numpy()
+
+
+linear = nn.Linear(A_train.shape[1], 1)
+p_torch = train_torch(linear, epochs=300, lr=0.05, log_at=(1, 10, 50, 100, 300))
+print(f"\\nROC AUC  PyTorch linear: {roc_auc_score(ye, p_torch):.3f}")
+""")
+
+md("""
+### Does a neural network help?
+
+Same loop, more layers. The question the room is asking: *is this where the real performance
+is?*
+""")
+
+code("""
+torch.manual_seed(RANDOM_SEED)
+mlp = nn.Sequential(
+    nn.Linear(A_train.shape[1], 64), nn.ReLU(),
+    nn.Linear(64, 32), nn.ReLU(),
+    nn.Linear(32, 1),
+)
+p_mlp = train_torch(mlp, epochs=300, lr=0.01, log_at=(1, 100, 300))
+
+print()
+for name, p in [("Logistic regression (NumPy)", p_numpy), ("Linear (PyTorch)", p_torch),
+                ("Neural network (PyTorch)", p_mlp), ("Gradient boosted trees", gbt.predict_proba(X_test)[:, 1])]:
+    print(f"{name:30s} ROC AUC {roc_auc_score(ye, p):.3f}   accuracy {accuracy_score(ye, p >= 0.5):.1%}")
+""")
+
+md("""
+> **Talking point.** Look at the two loss columns. The neural network's training loss ended
+> *lower* than the linear model's, and its score on new appointments is *worse*. It memorised
+> the training set. More code, more knobs, slower to train, harder to explain to a clinician,
+> and no better. On tables of appointments, claims, labs and encounters,
+> which is most of what a health system has, boosted trees are the default for a reason.
+> Deep learning earns its place on images, text, signals and speech. Pick the model for the
+> data, not for the press release.
+""")
+
+# --------------------------------------------------------------------------------------
+md("""
+## Block 5. Evaluate properly (6 min)
+
+Accuracy hides the thing we care about. Look at the two kinds of mistakes separately, and
+count them by hand first so nobody thinks the metric is magic either.
 
 - **Precision**: of the appointments we flag, how many really no-show?
 - **Recall**: of the real no-shows, how many did we flag?
+""")
+
+code("""
+model = gbt
+pred = model.predict(X_test)
+y = y_test.to_numpy()
+
+tp = int(((pred == 1) & (y == 1)).sum())   # flagged, and really no-showed
+fp = int(((pred == 1) & (y == 0)).sum())   # flagged, but turned up
+fn = int(((pred == 0) & (y == 1)).sum())   # not flagged, and no-showed
+tn = int(((pred == 0) & (y == 0)).sum())   # not flagged, and turned up
+
+print(f"true positives {tp:>5}   false positives {fp:>5}")
+print(f"false negatives {fn:>4}   true negatives  {tn:>5}\\n")
+print(f"precision = tp / (tp + fp) = {tp} / {tp + fp} = {tp / (tp + fp):.3f}")
+print(f"recall    = tp / (tp + fn) = {tp} / {tp + fn} = {tp / (tp + fn):.3f}")
+print(f"accuracy  = (tp + tn) / all = {(tp + tn) / len(y):.3f}   <-- the number from block 4")
+""")
+
+md("""
+Same numbers from the library, plus the curves.
 """)
 
 code("""

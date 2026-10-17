@@ -1,4 +1,7 @@
-# Talk track: the 25-minute notebook walk-through
+# Talk track: the 32-minute notebook walk-through
+
+Whole-session shape for a talk that runs a little over an hour: intro and the three kinds of AI
+(10), this notebook (32), "why it takes six months to ship" (15), seeded Q&A (10). About 67.
 
 Audience: the technical breakout at an org-wide event. Developers, analysts, infra, informatics,
 a few data-curious clinicians. Not a room of ML engineers. Narrate what each block does and
@@ -17,12 +20,14 @@ every output for backup slides.
 | 2 Look at the data | 3 | 5 |
 | 3 Frame the prediction | 2 | 7 |
 | 4 Train a baseline | 3 | 10 |
-| 5 Evaluate properly (live change 1) | 5 | 15 |
-| 6 Importance and the trap | 4 | 19 |
-| 7 Check for bias | 3 | 22 |
-| 8 Ship it, sort of (live change 2) | 3 | 25 |
+| 4b What fit() is doing | 6 | 16 |
+| 5 Evaluate properly (live change 1) | 6 | 22 |
+| 6 Importance and the trap | 4 | 26 |
+| 7 Check for bias | 3 | 29 |
+| 8 Ship it, sort of (live change 2) | 3 | 32 |
 
-Running long: cut block 7. Blocks 5, 6 and 8 are the talk.
+Running long: cut block 7 first, then the neural-network cell in 4b. Blocks 5, 6 and 8 are
+the talk.
 
 ## Block by block
 
@@ -40,8 +45,19 @@ cheat here without meaning to."
 **4. Train a baseline.** Two models, seconds each. Accuracy prints at about 83%. Pause.
 "Is that good?" Let it sit. Point back at 82%.
 
-**5. Evaluate properly.** Precision, recall, confusion matrix, the two curves. Then the sweep
-table. **Live change 1:** edit `THRESHOLD`, re-run. Try 0.15 (catches three quarters, flags
+**4b. What fit() is doing.** Three cells, for the developers in the room. First, logistic
+regression in ten lines of NumPy: predict, loss, gradient, update, in a loop. Watch the loss
+fall, then show it lands on the same AUC as scikit-learn to three decimals. Say: "That loop
+*is* training. Every model you will hear about this year, including the large language
+models, is some version of those four lines run a few billion times." Second, the same loop in
+PyTorch; point at `loss.backward()` as the only new idea. Third, a small neural network on the
+same data. It loses to the boosted tree, and its training loss is lower than the linear
+model's while its test score is worse. Say: "It memorised the training set. Pick the model for
+the data, not for the press release." Cut the third cell if running long.
+
+**5. Evaluate properly.** Count true and false positives by hand first, two divisions, and
+show accuracy from block 4 falling out of the same four numbers. Then the library report, the
+confusion matrix, the two curves, and the sweep table. **Live change 1:** edit `THRESHOLD`, re-run. Try 0.15 (catches three quarters, flags
 nearly half the clinic) then 0.50 (flags 6%, catches one in five).
 Say: "The model does not decide the threshold. The clinic does. Reminder call, go low.
 Overbooking the slot, go high."
