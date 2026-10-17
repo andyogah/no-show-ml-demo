@@ -1,0 +1,3 @@
+{
+  "python.defaultInterpreterPath": "${env:LOCALAPPDATA}\\repo-venvs\\no-show-ml-demo\\Scripts\\python.exe"
+}
