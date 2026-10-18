@@ -51,33 +51,18 @@ md("""
 """)
 
 md("""
-## One problem for the whole hour
-
-**Outpatient appointments that do not show up.**
-
-- An empty chair that someone on the waiting list could have used, a clinician's time lost,
-  and often the patient who needed the visit most.
-- Everyone in this building has a theory about why.
-- The data: two years of outpatient appointments, twenty thousand of them. Synthetic, built to
-  behave like the real thing, so nothing here is anyone's record.
-
-Now, the colours on that first picture. They are a hint: six ideas up there, not eighty, and
-each one has a job on this problem.
-""")
-
-md("""
 ## Six colours, six ideas
 
-Each one on the same problem: appointments that do not show up.
+The colours on that picture were a hint: six ideas up there, not eighty.
 
 | | |
 |---|---|
-| **Artificial intelligence** | The computer does something that looks like judgement, such as deciding which appointments are at risk. |
-| **Machine learning** | It learned the rule from past appointments instead of a person writing the rule. |
+| **Artificial intelligence** | The computer does something that looks like judgement: a call a person used to make. |
+| **Machine learning** | It learned the rule from past examples instead of a person writing the rule. |
 | **Deep learning** | The same thing with many stacked layers. Needed for images, text, speech and signals. |
 | **Data science** | Getting from raw records to a question a model can answer. Most of the work, and most of the time. |
 | **Statistics** | The discipline of knowing how wrong you are. It shows up the moment we evaluate a model. |
-| **Agents, agentic AI** | A model that can also take actions, like sending the reminder, and check what happened. Chain several toward a goal, choosing their own next steps, and people call it agentic. |
+| **Agents, agentic AI** | A model that can also take actions and check what happened. Chain several toward a goal, choosing their own next steps, and people call it agentic. |
 
 The first three nest: deep learning is a kind of machine learning is a kind of AI. The other
 three are what you do around a model.
@@ -94,7 +79,23 @@ image("00b-equation.png", 950)
 md("""
 Everything on that picture is one of five things: that equation, how you find its numbers,
 how you judge it, what you feed it, or what you wrap around it. The equation is the one you
-learned at fourteen. Here it is on our problem.
+learned at fourteen. To see it work, we need a problem.
+""")
+
+md("""
+## One problem for the whole hour
+
+Here is the one we will use for everything that follows.
+
+**Outpatient appointments that do not show up.**
+
+- An empty chair that someone on the waiting list could have used, a clinician's time lost,
+  and often the patient who needed the visit most.
+- Everyone in this building has a theory about why.
+- The data: two years of outpatient appointments, twenty thousand of them. Synthetic, built to
+  behave like the real thing, so nothing here is anyone's record.
+
+One picture of that data.
 """)
 
 md("""
