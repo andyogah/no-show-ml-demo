@@ -54,11 +54,14 @@ month?" Let two or three people answer. Do not read the slide.
 
 ## 3. One idea under all of them
 
-**On screen:** The same cloud, faded to grey, with one line in the middle: **y = mx + b**.
+**On screen:** The same cloud, faded to grey, with one line in the middle: **y = mx + b**,
+and under it: *the equation, how you find its numbers, how you judge it, what you feed it,
+what you wrap around it.*
 
-**Say:** "Nearly every word on that slide sits on one idea, and it is the one you learned at
-fourteen. And look at the colours: that mess is really five or six ideas. Hold that thought
-for two minutes while we get those six out of the way."
+**Say:** "Everything on that slide is one of five things. The equation you learned at
+fourteen, how you find its numbers, how you judge it, what you feed it, or what you wrap
+around it. And look at the colours: that mess is really six ideas. Two minutes to get them
+out of the way."
 
 ## 4. Six colours, six ideas
 
@@ -127,16 +130,21 @@ line is logistic regression, and it is the first model we train today."
 
 ## 10. Stack it
 
-**On screen:** Three rows, building down:
+**On screen:** Rows, building down:
 1. one squashed line (logistic regression)
 2. several squashed lines feeding into another squashed line (a neural network)
 3. many of those stacked (deep learning), with the words "images, text, speech, signals"
+4. the same with a trick for attending to words in order (a large language model)
+5. stacked if-thens instead of stacked lines, hundreds added up (trees: random forests,
+   gradient boosting)
 
 **Say:** "Stack a few of those bent lines so the output of one feeds the next, and you have a
 neural network. Stack a lot, and you have deep learning. The large language models are this,
 with a trick for paying attention to words in order, run on an enormous amount of text. It is
-the same equation all the way down. Every one of those weights was found by the same
-nudging loop."
+the same equation all the way down. The other popular family is trees: stacked if-thens
+instead of stacked lines. Not the equation, but found by the same loop, measure how wrong and
+take a step. In about twenty minutes you will watch a tree beat the neural network on our
+data. Someone here was going to ask, so there it is."
 
 ## 11. The problem for the next 32 minutes
 

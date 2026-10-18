@@ -51,12 +51,13 @@ md("""
 """)
 
 md("""
-## One idea under all of them
+## One idea under most of them
 
 # y = mx + b
 
-Nearly every word on that picture sits on the one equation you learned at fourteen.
-The colours are a hint: there are six ideas up there, not eighty.
+Everything on that picture is one of five things: that equation, how you find its numbers,
+how you judge it, what you feed it, or what you wrap around it. The equation is the one you
+learned at fourteen. The colours are a hint: there are six ideas up there, not eighty.
 """)
 
 md("""
@@ -136,9 +137,11 @@ md("""
 | Several squashed lines feeding into another one | a neural network |
 | Many of those, stacked | deep learning: images, text, speech, signals |
 | Deep learning with a trick for attending to words in order, on an enormous amount of text | a large language model |
+| Stacked if-thens instead of stacked lines, hundreds of them added up | trees: random forests, gradient boosting |
 
-It is the same equation all the way down. Every one of those weights was found by the same
-nudging loop.
+The first four are the same equation all the way down. Trees are the other popular family,
+and they are found by the same nudging loop: measure how wrong, take a step. In about twenty
+minutes a tree beats the neural network on our data.
 """)
 
 md("""
