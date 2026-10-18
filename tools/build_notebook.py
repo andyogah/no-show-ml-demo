@@ -62,7 +62,7 @@ The colours on that picture were a hint: six ideas up there, not eighty.
 | **Deep learning** | The same thing with many stacked layers. Needed for images, text, speech and signals. |
 | **Data science** | Getting from raw records to a question a model can answer. Most of the work, and most of the time. |
 | **Statistics** | The discipline of knowing how wrong you are. It shows up the moment we evaluate a model. |
-| **Agents, agentic AI** | A model that can also take actions and check what happened. Chain several toward a goal, choosing their own next steps, and people call it agentic. |
+| **Agents, agentic AI** | A model that can also take actions, like sending a message or booking a slot, and check what happened. Chain several toward a goal, choosing their own next steps, and people call it agentic. |
 
 The first three nest: deep learning is a kind of machine learning is a kind of AI. The other
 three are what you do around a model.

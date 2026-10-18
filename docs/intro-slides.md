@@ -67,7 +67,7 @@ what you do around a model.
 | Deep learning | The same thing with many stacked layers. Needed for images, text, speech and signals. |
 | Data science | Getting from raw records to a question a model can answer. Most of the work, and most of the time. |
 | Statistics | The discipline of knowing how wrong you are. It shows up the moment we evaluate a model. |
-| Agents, agentic AI | A model that can also take actions and check what happened. Chain several toward a goal and people call it agentic. |
+| Agents, agentic AI | A model that can also take actions, like sending a message or booking a slot, and check what happened. Chain several toward a goal and people call it agentic. |
 
 **Say:** "That mess was six ideas." One sentence each, no elaboration. The data science row is
 the one to lean on: "that row is four of the six months." Hard stop at two and a half
