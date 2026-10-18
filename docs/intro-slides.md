@@ -96,7 +96,11 @@ synthetic.
 
 **Say:** "Here is the problem we will use for the rest of the hour. Every one of you has seen
 it and most of you have a theory about it. The data is made up, on purpose, built to behave
-like the real thing, so nothing on this screen is anyone's record. One picture of it."
+like the real thing, so nothing on this screen is anyone's record. You will watch it being
+built in Part 2; I ran it once this morning for the next few pictures. One picture of it."
+
+The room will otherwise ask where the intro charts came from, twenty minutes later, in the
+middle of block 1. Saying it here costs five seconds and turns block 1 into a callback.
 
 ## 5. What the data says
 

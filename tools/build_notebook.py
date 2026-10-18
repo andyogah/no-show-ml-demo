@@ -93,7 +93,8 @@ Here is the one we will use for everything that follows.
   and often the patient who needed the visit most.
 - Everyone in this building has a theory about why.
 - The data: two years of outpatient appointments, twenty thousand of them. Synthetic, built to
-  behave like the real thing, so nothing here is anyone's record.
+  behave like the real thing, so nothing here is anyone's record. You will watch it being built
+  in Part 2. I ran it once before we started, for the pictures that follow.
 
 One picture of that data.
 """)
@@ -236,8 +237,9 @@ cells[-1].metadata["jupyter"] = {"source_hidden": True}
 md("""
 ## Block 1. Generate the data (2 min)
 
-One function builds 20,000 synthetic outpatient appointments. The signal is realistic:
-long lead times and a history of no-shows drive the outcome, reminders reduce it.
+One function builds 20,000 synthetic outpatient appointments. This is where every picture in
+Part 1 came from. The signal is realistic: long lead times and a history of no-shows drive the
+outcome, reminders reduce it.
 
 Two of the three traps are planted here and revealed later:
 
@@ -329,7 +331,8 @@ md("""
 ## Block 2. Look at the data (3 min)
 
 Before any modelling: what does a row look like, and how often does the thing we care about
-actually happen?
+actually happen? The chart at the end is the one from Part 1, now drawn from data you watched
+being built.
 """)
 
 code("""

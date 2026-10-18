@@ -31,7 +31,8 @@ the talk.
 
 ## Block by block
 
-**1. Generate the data.** Scroll the generator, do not read it. Point at the comment on
+**1. Generate the data.** Open with the callback: "This is the function that made every
+picture in Part 1." Scroll the generator, do not read it. Point at the comment on
 `reminder_confirmed` only if someone asks; otherwise it is the surprise for block 6.
 Say: "This is the step that takes 20 seconds here and four months in real life."
 
