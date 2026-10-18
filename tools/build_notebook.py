@@ -56,22 +56,25 @@ md("""
 # y = mx + b
 
 Nearly every word on that picture sits on the one equation you learned at fourteen.
-The colours are a hint: there are only five or six ideas up there, not sixty.
+The colours are a hint: there are six ideas up there, not eighty.
 """)
 
 md("""
-## The definitions, nested
+## Six colours, six ideas
 
-Outer ring to inner, each one on the same problem: appointments that do not show up.
+Each one on the same problem: appointments that do not show up.
 
 | | |
 |---|---|
 | **Artificial intelligence** | The computer does something that looks like judgement, such as deciding which appointments are at risk. |
 | **Machine learning** | It learned the rule from past appointments instead of a person writing the rule. |
 | **Deep learning** | The same thing with many stacked layers. Needed for images, text, speech and signals. |
-| **Agent** | A model that can also take actions, like sending the reminder, and check what happened. |
-| **Agentic AI** | Agents chained together toward a goal, choosing their own next steps. |
+| **Data science** | Getting from raw records to a question a model can answer. Most of the work, and most of the time. |
 | **Statistics** | The discipline of knowing how wrong you are. It shows up the moment we evaluate a model. |
+| **Agents, agentic AI** | A model that can also take actions, like sending the reminder, and check what happened. Chain several toward a goal, choosing their own next steps, and people call it agentic. |
+
+The first three nest: deep learning is a kind of machine learning is a kind of AI. The other
+three are what you do around a model.
 """)
 
 md("""
@@ -100,7 +103,7 @@ Give me a lead time, I give you a no-show rate. That is the whole model.
 > **Machine learning is finding m and b from the data instead of guessing them.**
 > Nobody typed those numbers. The computer tried values, measured how wrong the line was, and
 > nudged. That nudging loop is what the word *training* means. You will watch it run in about
-> twenty minutes.
+> ten minutes.
 """)
 
 md("""
@@ -144,37 +147,22 @@ md("""
 - Predict which outpatient appointments will be no-shows.
 - The day before, for the scheduling team.
 - Synthetic data, generated in front of you. No PHI anywhere.
-- Three traps are planted. You will see each one when the model falls into it.
+- Three traps. Two are planted in the data; the third arrives after launch. You will see each
+  one when the model falls into it.
 
-**Here is the loop finding m and b.**
+**The loop cannot find m and b without data. So that is where we start, and it is where real
+life starts too.**
 """)
 
 # ======================================================================================
 # PART 2. The notebook proper.
 # ======================================================================================
 md("""
-# Part 2: predicting outpatient no-shows, end to end
+# Part 2: build it
 
-**What this notebook is.** One prediction problem everyone in the building understands,
-walked from raw rows to a deployed-ish model in about 32 minutes. The data is synthetic and
-generated in the first cell, so there is no PHI, no download, and nothing to break on a
-managed laptop.
-
-**What this notebook is not.** A tutorial on syntax. Narrate what each block does and why.
-
-| Block | Minutes | What the room should take away |
-|---|---|---|
-| 1. Generate the data | 2 | The step that takes 20 seconds here and four months in real life |
-| 2. Look at the data | 3 | The base rate. Plant the 82% number now |
-| 3. Frame the prediction | 2 | Split by time, not at random |
-| 4. Train a baseline | 3 | "Is 83% good?" |
-| 4b. What `fit()` is doing | 6 | Training is four lines in a loop; deep is not automatically better |
-| 5. Evaluate properly | 6 | The clinic picks the threshold, not the model |
-| 6. Feature importance and the trap | 4 | Target leakage. The data engineer is worth more than the model |
-| 7. Check for bias | 3 | The model learned the process, not the patient |
-| 8. Ship it, sort of | 3 | Who is watching this number in month three? |
-
-If you run long, cut block 7 first, then the neural-network cell in 4b. Blocks 5, 6 and 8 are the talk.
+From raw rows to a model you could call from a scheduling screen, in eight blocks. Everything
+here is synthetic and generated in front of you. If you want to run it yourself afterwards,
+the repository is in the last cell.
 """)
 
 code("""
@@ -213,11 +201,13 @@ md("""
 One function builds 20,000 synthetic outpatient appointments. The signal is realistic:
 long lead times and a history of no-shows drive the outcome, reminders reduce it.
 
-Two things are planted on purpose and revealed later:
+Two of the three traps are planted here and revealed later:
 
-- a column that is only populated **after** the appointment outcome is known
-- a group of patients whose history the system records badly and whose no-shows are driven by
-  things the data never captures
+- **Trap 1:** a column that is only populated **after** the appointment outcome is known
+- **Trap 2:** a group of patients whose history the system records badly and whose no-shows
+  are driven by things the data never captures
+
+Trap 3 is not in the data. It arrives after launch.
 
 > **Talking point.** This is the one step that takes 20 seconds here and four months in real
 > life: finding the tables, getting access, agreeing on what "no-show" even means, and
@@ -388,8 +378,8 @@ md("""
 
 Two models, both train in seconds: a logistic regression and a gradient-boosted tree.
 
-> **Talking point.** Pause after the numbers print. *"Is that good?"* Let the room sit with
-> it. Then point back at the 82% from block 2.
+> **Is that good?** Hold it against the number from block 2: saying *everyone shows up* scores
+> 82%.
 """)
 
 code("""
@@ -426,7 +416,9 @@ print(f"{A_train.shape[0]:,} rows x {A_train.shape[1]} numeric columns")
 """)
 
 md("""
-### Logistic regression by hand
+### Logistic regression by hand: finding m and b
+
+`w` is the m's from the intro, one per column. `b` is b.
 """)
 
 code("""
@@ -456,7 +448,8 @@ print(f"accuracy by hand: {accuracy_score(ye, p_numpy >= 0.5):.1%}   scikit-lear
 """)
 
 md("""
-> **Talking point.** That loop *is* training. Every model you will hear about this year,
+> **Talking point.** That loop *is* training. It is the nudging from the intro: guess m and b,
+> measure how wrong, move a little, repeat. Every model you will hear about this year,
 > including the large language models, is some version of those four lines run a few
 > billion times on more data. The library call in block 4 did exactly this.
 """)
@@ -499,8 +492,7 @@ print(f"\\nROC AUC  PyTorch linear: {roc_auc_score(ye, p_torch):.3f}")
 md("""
 ### Does a neural network help?
 
-Same loop, more layers. The question the room is asking: *is this where the real performance
-is?*
+Same loop, more layers. The obvious question: *is this where the real performance is?*
 """)
 
 code("""
@@ -640,7 +632,7 @@ print(f"  accuracy {r['accuracy']:.1%}")
 
 # --------------------------------------------------------------------------------------
 md("""
-## Block 6. Feature importance, and the planted trap (4 min)
+## Block 6. Trap 1: the answer key (4 min)
 
 What is the model actually using? Permutation importance: shuffle one column, see how much
 the score drops.
@@ -699,7 +691,7 @@ md("""
 
 # --------------------------------------------------------------------------------------
 md("""
-## Block 7. Check for bias (3 min)
+## Block 7. Trap 2: the group the data forgot (3 min)
 
 Does the model work equally well for everyone? Break recall out by whether the patient has a
 patient-portal account, which in real systems tracks age, language and income.
@@ -724,9 +716,9 @@ fairness.style.format({"actual no-show rate": "{:.0%}", "recall (caught)": "{:.0
 
 md("""
 > **Talking point.** The group with the higher no-show rate is the group the model catches
-> least. Not because they are harder to predict in principle, but because the historical
-> reminder process reached them less, and the reasons they miss appointments were never
-> recorded. **The model learned the process, not the patient.** Deploy this as-is and the
+> least. Not because they are harder to predict in principle, but because the reminder
+> process reached them less, the system recorded their history worse, and the reasons they
+> miss appointments were never written down anywhere. **The model learned the process, not the patient.** Deploy this as-is and the
 > reminder calls go to the people who were already getting reminders.
 """)
 
@@ -763,7 +755,7 @@ print(predict_one({"department": "Behavioral Health", "appt_hour": 8, "day_of_we
 """)
 
 md("""
-### Live change: three months later
+### Trap 3: the world moved
 
 The clinic opened scheduling further out. Lead times stretched. Nobody told the model.
 """)
@@ -809,22 +801,24 @@ md("""
 > alert fired, the endpoint returns 200. This is month three in production. **Who is watching
 > this number?**
 >
-> That question is the handoff: everything after this slide is why the 25 minutes you just
-> watched takes six months to ship for real.
+> That question is the handoff: everything from here is why the half hour you just watched
+> takes six months to ship for real.
 
 ---
 
-## What this took vs. what it takes
+## What this took vs. what it actually takes
 
 | Here | In a health system |
 |---|---|
 | Data appeared in one cell | Data access, ownership, definitions, de-identification |
-| 84% accuracy | A bar that means something clinically, agreed with the people who act on it |
+| 83% accuracy | A bar that means something clinically, agreed with the people who act on it |
 | We found the leak because we planted it | Someone has to know how every column is populated |
 | We checked one group | Fairness review, plus the question of what you do about it |
 | The threshold was a variable | A decision owned by the clinic, documented, revisited |
 | We noticed drift because we caused it | Monitoring, retraining triggers, someone on call |
 | `predict_one` | Intake, risk review, PHI handling, logging, an owner |
+
+The notebook and the synthetic data: `github.com/andyogah/no-show-ml-demo`.
 """)
 
 # --------------------------------------------------------------------------------------

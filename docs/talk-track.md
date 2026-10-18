@@ -14,17 +14,17 @@ every output for backup slides.
 
 ## Clock
 
-| Block | Min | Cumulative |
-|---|---|---|
-| 1 Generate the data | 2 | 2 |
-| 2 Look at the data | 3 | 5 |
-| 3 Frame the prediction | 2 | 7 |
-| 4 Train a baseline | 3 | 10 |
-| 4b What fit() is doing | 6 | 16 |
-| 5 Evaluate properly (live change 1) | 6 | 22 |
-| 6 Importance and the trap | 4 | 26 |
-| 7 Check for bias | 3 | 29 |
-| 8 Ship it, sort of (live change 2) | 3 | 32 |
+| Block | Min | Cum. | What the room should take away |
+|---|---|---|---|
+| 1 Generate the data | 2 | 2 | The step that takes 20 seconds here and four months in real life |
+| 2 Look at the data | 3 | 5 | The base rate. Plant the 82% number now |
+| 3 Frame the prediction | 2 | 7 | Split by time, not at random |
+| 4 Train a baseline | 3 | 10 | "Is 83% good?" |
+| 4b What fit() is doing | 6 | 16 | Training is the nudging loop from the intro; deep is not automatically better |
+| 5 Evaluate properly (live change 1) | 6 | 22 | The clinic picks the threshold, not the model |
+| 6 Trap 1: the answer key | 4 | 26 | Target leakage. The data engineer is worth more than the model |
+| 7 Trap 2: the group the data forgot | 3 | 29 | The model learned the process, not the patient |
+| 8 Ship it, sort of (trap 3, live change 2) | 3 | 32 | Who is watching this number in month three? |
 
 Running long: cut block 7 first, then the neural-network cell in 4b. Blocks 5, 6 and 8 are
 the talk.
@@ -62,19 +62,19 @@ nearly half the clinic) then 0.50 (flags 6%, catches one in five).
 Say: "The model does not decide the threshold. The clinic does. Reminder call, go low.
 Overbooking the slot, go high."
 
-**6. Importance and the trap.** Show the honest importance chart: lead time, prior no-shows,
+**6. Trap 1: the answer key.** Show the honest importance chart: lead time, prior no-shows,
 reminders. Then: "Someone from the front-desk system says you skipped a column." Add
 `reminder_confirmed`, retrain. Accuracy jumps to 96% and the importance chart is one orange
 bar. Say: "That field is written at check-in. It is populated after the outcome. The model
 found the answer key." Name it: target leakage. "The data engineer who knows how that field
 gets populated is worth more than the model."
 
-**7. Check for bias.** Recall by portal account. The group with the *higher* no-show rate is
+**7. Trap 2: the group the data forgot.** Recall by portal account. The group with the *higher* no-show rate is
 the group the model catches *least*, roughly half the recall. Say: "The reminder process
 reached them less and the system recorded their history worse. The model learned the process,
 not the patient. Ship this and the reminder calls go to the people already getting reminders."
 
-**8. Ship it, sort of.** Save, load, `predict_one` twice. Then **live change 2:** the drift
+**8. Ship it, sort of.** Save, load, `predict_one` twice. Then **trap 3, live change 2:** the drift
 batch with `lead_time_mean=45`. Share flagged jumps from 17% to 45%. Show the histogram.
 Say: "Nothing is broken. No alert fired. The endpoint returns 200. This is month three.
 Who is watching this number?" That line is the handoff to the governance section.

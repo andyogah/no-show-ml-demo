@@ -60,24 +60,25 @@ month?" Let two or three people answer. Do not read the slide.
 fourteen. And look at the colours: that mess is really five or six ideas. Hold that thought
 for two minutes while we get those six out of the way."
 
-## 4. Definitions, nested
+## 4. Six colours, six ideas
 
-**On screen:** Five concentric rings, outer to inner: AI, machine learning, deep learning.
-Beside the rings, two boxes stacked: agent, agentic AI, with an arrow from the rings into
-them ("a model, plus"). One sentence next to each term, all phrased on the no-show problem.
+**On screen:** A six-row table, one row per colour in the word cloud, each sentence phrased
+on the no-show problem. The first three nest (deep learning inside machine learning inside
+AI); the other three are what you do around a model.
 
 | Term | The sentence on the slide |
 |---|---|
 | Artificial intelligence | The computer does something that looks like judgement, such as deciding which appointments are at risk. |
 | Machine learning | It learned the rule from past appointments instead of a person writing the rule. |
 | Deep learning | The same thing with many stacked layers. Needed for images, text, speech and signals. |
-| Agent | A model that can also take actions, like sending the reminder, and check what happened. |
-| Agentic AI | Agents chained together toward a goal, choosing their own next steps. |
+| Data science | Getting from raw records to a question a model can answer. Most of the work, and most of the time. |
+| Statistics | The discipline of knowing how wrong you are. It shows up the moment we evaluate a model. |
+| Agents, agentic AI | A model that can also take actions, like sending the reminder, and check what happened. Chain several toward a goal and people call it agentic. |
 
-**Say:** Walk the rings from the outside in, one sentence each, no elaboration. Then the two
-boxes. Then: "Statistics is the one not on this slide. It is the discipline of knowing how
-wrong you are, and it shows up the moment we evaluate a model." Hard stop at three minutes.
-If someone wants to argue a definition, offer to take it in Q&A.
+**Say:** One sentence each, no elaboration. Point at the colour in the cloud as you go if the
+cloud is still on a second screen. The data science row is the one to lean on: "that row is
+four of the six months." Hard stop at three minutes. If someone wants to argue a definition,
+offer to take it in Q&A.
 
 ## 5. What the data says
 
@@ -143,7 +144,7 @@ nudging loop."
 - Predict which outpatient appointments will be no-shows.
 - The day before, for the scheduling team.
 - Synthetic data, generated in front of you. No PHI anywhere.
-- Watch for three traps I planted.
+- Three traps. Two in the data, one after launch.
 
 **Say:** "Same problem, real code. The data is made up, on purpose, so you can take this home
 and run it. I have hidden three traps in it, the kind we find in real projects, and I will
@@ -153,7 +154,8 @@ show you each one when the model falls into it."
 
 **On screen:** "Part 2: build it. 32 minutes." A screenshot of the notebook's first cell.
 
-**Say:** "Here is the loop finding m and b." Switch to the notebook, block 1.
+**Say:** "The loop cannot find m and b without data. So that is where we start, and it is
+where real life starts too." Scroll to block 1.
 
 ---
 
