@@ -52,9 +52,11 @@ md("""
 
 md("""
 ## One idea under most of them
+""")
 
-# y = mx + b
+image("00b-equation.png", 950)
 
+md("""
 Everything on that picture is one of five things: that equation, how you find its numbers,
 how you judge it, what you feed it, or what you wrap around it. The equation is the one you
 learned at fourteen. The colours are a hint: there are six ideas up there, not eighty.

@@ -56,14 +56,16 @@ month?" Let two or three people answer. Do not read the slide.
 
 ## 3. One idea under all of them
 
-**On screen:** The same cloud, faded to grey, with one line in the middle: **y = mx + b**,
-and under it: *the equation, how you find its numbers, how you judge it, what you feed it,
-what you wrap around it.*
+**On screen:** `figures/00b-equation.png`. **y = mx + b** very large, with a callout from
+each symbol: y is the answer, x is what you already know, m is how much x matters, b is where
+you start. Under it, one line: *the equation, how you find its numbers, how you judge it,
+what you feed it, what you wrap around it.*
 
-**Say:** "Everything on that slide is one of five things. The equation you learned at
+**Say:** "Everything on that slide is one of five things. This equation, which you learned at
 fourteen, how you find its numbers, how you judge it, what you feed it, or what you wrap
-around it. And look at the colours: that mess is really six ideas. Two minutes to get them
-out of the way."
+around it." Touch the four callouts in order: "The thing you want to know. The thing you
+already know. How much the one moves the other. Where you start." Then: "And look at the
+colours: that mess is really six ideas. Two minutes to get them out of the way."
 
 ## 4. Six colours, six ideas
 

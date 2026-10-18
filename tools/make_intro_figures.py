@@ -143,8 +143,58 @@ fig.savefig(OUT / "03-squashed.png")
 plt.close(fig)
 
 # ---------------------------------------------------------------------------------------
-# 04: more inputs, more m's. The equation as a picture: inputs, one weighted arrow each, a sum.
+# 00b: the one idea. y = mx + b, large, with a callout from each symbol saying what it is.
 from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch  # noqa: E402
+
+fig, ax = plt.subplots(figsize=(10, 4.6))
+ax.set_xlim(0, 10)
+ax.set_ylim(0, 4.6)
+ax.axis("off")
+fig.subplots_adjust(left=0.02, right=0.98, top=0.98, bottom=0.02)
+
+EQ = [("y", BLUE), ("  =  ", GRAY), ("m", ORANGE), ("x", BLUE), ("  +  ", GRAY), ("b", ORANGE)]
+EQ_SIZE = 64
+fig.canvas.draw()
+renderer = fig.canvas.get_renderer()
+widths = []
+for text, _ in EQ:
+    t = ax.text(0, 0, text, fontsize=EQ_SIZE, fontweight="bold", family="DejaVu Sans", style="italic")
+    widths.append(t.get_window_extent(renderer).width)
+    t.remove()
+total = sum(widths)
+to_data = lambda xd: ax.transData.inverted().transform((xd, 0))[0]
+x_disp = ax.transData.transform((5.0, 0))[0] - total / 2
+y_eq = 2.3
+centres = {}
+for (text, colour), w in zip(EQ, widths):
+    ax.text(to_data(x_disp), y_eq, text, fontsize=EQ_SIZE, fontweight="bold", color=colour, family="DejaVu Sans",
+            style="italic", ha="left", va="center")
+    centres[text.strip()] = to_data(x_disp + w / 2)
+    x_disp += w
+
+CALLOUTS = [  # symbol, label, side (above/below)
+    ("y", "the answer\nwhat you want to know", "above"),
+    ("x", "what you already know\nthe input", "above"),
+    ("m", "how much x matters\nthe slope", "below"),
+    ("b", "where you start\nwhen x is zero", "below"),
+]
+for sym, label, side in CALLOUTS:
+    cx = centres[sym]
+    colour = BLUE if sym in ("y", "x") else ORANGE
+    if side == "above":
+        tip, txt = (cx, y_eq + 0.62), (cx, y_eq + 1.75)
+    else:
+        tip, txt = (cx, y_eq - 0.68), (cx, y_eq - 1.75)
+    ax.add_patch(FancyArrowPatch(txt, tip, arrowstyle="-|>", mutation_scale=14, color=colour, lw=1.6,
+                                 shrinkA=18, shrinkB=2))
+    ax.text(txt[0], txt[1], label, ha="center", va="center", fontsize=12.5, color="#0b0b0b", linespacing=1.35,
+            bbox=dict(boxstyle="round,pad=0.4,rounding_size=0.3", fc="white", ec=colour, lw=1.4))
+
+fig.savefig(OUT / "00b-equation.png")
+plt.close(fig)
+
+# ---------------------------------------------------------------------------------------
+# 04: more inputs, more m's. The equation as a picture: inputs, one weighted arrow each, a sum.
 
 INPUTS = [("lead time", "45 days"), ("prior no-shows", "2"), ("reminder sent", "no"),
           ("distance", "30+ mi"), ("…", "")]
@@ -296,4 +346,4 @@ fig.savefig(OUT / "05-stack-it.png")
 plt.close(fig)
 
 print(f"m = {m:.4f} per day ({m*10:.1%} per 10 days), b = {b:.1%}")
-print(f"wrote 6 figures to {OUT.relative_to(ROOT)}/")
+print(f"wrote 7 figures to {OUT.relative_to(ROOT)}/")
