@@ -465,6 +465,7 @@ def bce_loss(y, p, eps=1e-8):
 
 w, b = np.zeros(A_train.shape[1]), 0.0     # start anywhere: every m is 0, b is 0
 lr = 0.5                                    # how big a step to take each time
+history = []
 for step in range(1, 301):
     p = sigmoid(A_train @ w + b)            # 1. predict
     loss = bce_loss(yt, p)                  # 2. how wrong are we (the height of the hill)
@@ -472,6 +473,7 @@ for step in range(1, 301):
     w -= lr * (A_train.T @ dz)              # 4. take a small step downhill
     b -= lr * dz.sum()                      #    ...and the same for b
     # steps 3 and 4 together are gradient descent
+    history.append(loss)
     if step in (1, 10, 50, 100, 300):
         print(f"step {step:>3}  loss {loss:.4f}")
 
@@ -479,6 +481,22 @@ p_numpy = sigmoid(A_test @ w + b)
 p_sklearn = logreg.predict_proba(X_test)[:, 1]
 print(f"\\nROC AUC  by hand: {roc_auc_score(ye, p_numpy):.3f}   scikit-learn: {roc_auc_score(ye, p_sklearn):.3f}")
 print(f"accuracy by hand: {accuracy_score(ye, p_numpy >= 0.5):.1%}   scikit-learn: {accuracy_score(ye, p_sklearn >= 0.5):.1%}")
+""")
+
+code("""
+# The hill, seen from the side: how wrong we were at each step of the walk down.
+fig, ax = plt.subplots(figsize=(7, 3.2))
+ax.plot(range(1, len(history) + 1), history, color=BLUE, lw=2)
+ax.scatter([1, 10, 50, 100, 300], [history[i - 1] for i in (1, 10, 50, 100, 300)], color=ORANGE, s=36, zorder=3)
+for i in (1, 10, 50):
+    ax.annotate(f"step {i}", (i, history[i - 1]), xytext=(8, 6), textcoords="offset points", fontsize=9, color=GRAY)
+ax.set_title("Walking downhill: the loss at every step", loc="left")
+ax.set_xlabel("Step")
+ax.set_ylabel("Loss (how wrong)")
+ax.grid(color="#e6e6e3", lw=0.8)
+ax.set_axisbelow(True)
+plt.tight_layout()
+plt.show()
 """)
 
 md("""

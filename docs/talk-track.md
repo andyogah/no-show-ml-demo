@@ -47,8 +47,9 @@ cheat here without meaning to."
 
 **4b. What fit() is doing.** Three cells, for the developers in the room. First, logistic
 regression in ten lines of NumPy: predict, how wrong, which way is downhill, step, in a loop.
-Read the four comments, not the code. Watch the loss fall, then show it lands on the same AUC
-as scikit-learn to three decimals. Say: "That loop *is* training. It is the nudging from the
+Read the four comments, not the code. Run the loop, then the plot under it: the loss falling
+over 300 steps is the hill seen from the side. Then show it lands on the same AUC as
+scikit-learn to three decimals. Say: "That loop *is* training. It is the nudging from the
 intro, and its name is gradient descent: the hill is the loss, and every step goes downhill.
 Every model you will hear about this year, including the large language models, is some
 version of those four lines run a few billion times." Second, the same loop in PyTorch; point
