@@ -46,11 +46,13 @@ cheat here without meaning to."
 "Is that good?" Let it sit. Point back at 82%.
 
 **4b. What fit() is doing.** Three cells, for the developers in the room. First, logistic
-regression in ten lines of NumPy: predict, loss, gradient, update, in a loop. Watch the loss
-fall, then show it lands on the same AUC as scikit-learn to three decimals. Say: "That loop
-*is* training. Every model you will hear about this year, including the large language
-models, is some version of those four lines run a few billion times." Second, the same loop in
-PyTorch; point at `loss.backward()` as the only new idea. Third, a small neural network on the
+regression in ten lines of NumPy: predict, how wrong, which way is downhill, step, in a loop.
+Read the four comments, not the code. Watch the loss fall, then show it lands on the same AUC
+as scikit-learn to three decimals. Say: "That loop *is* training. It is the nudging from the
+intro, and its name is gradient descent: the hill is the loss, and every step goes downhill.
+Every model you will hear about this year, including the large language models, is some
+version of those four lines run a few billion times." Second, the same loop in PyTorch; point
+at `loss.backward()` as the only new idea: it works out which way is downhill for you. Third, a small neural network on the
 same data. It loses to the boosted tree, and its training loss is lower than the linear
 model's while its test score is worse. Say: "It memorised the training set. Pick the model for
 the data, not for the press release." Cut the third cell if running long.

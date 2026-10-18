@@ -463,13 +463,15 @@ def bce_loss(y, p, eps=1e-8):
     return -np.mean(y * np.log(p) + (1 - y) * np.log(1 - p))
 
 
-w, b, lr = np.zeros(A_train.shape[1]), 0.0, 0.5
+w, b = np.zeros(A_train.shape[1]), 0.0     # start anywhere: every m is 0, b is 0
+lr = 0.5                                    # how big a step to take each time
 for step in range(1, 301):
     p = sigmoid(A_train @ w + b)            # 1. predict
-    loss = bce_loss(yt, p)                  # 2. how wrong are we
-    dz = (p - yt) / len(yt)                 # 3. which direction reduces the loss
-    w -= lr * (A_train.T @ dz)              # 4. move the weights a little that way
-    b -= lr * dz.sum()
+    loss = bce_loss(yt, p)                  # 2. how wrong are we (the height of the hill)
+    dz = (p - yt) / len(yt)                 # 3. the gradient: which way is downhill
+    w -= lr * (A_train.T @ dz)              # 4. take a small step downhill
+    b -= lr * dz.sum()                      #    ...and the same for b
+    # steps 3 and 4 together are gradient descent
     if step in (1, 10, 50, 100, 300):
         print(f"step {step:>3}  loss {loss:.4f}")
 
@@ -481,7 +483,8 @@ print(f"accuracy by hand: {accuracy_score(ye, p_numpy >= 0.5):.1%}   scikit-lear
 
 md("""
 > **Talking point.** That loop *is* training. It is the nudging from the intro: guess m and b,
-> measure how wrong, move a little, repeat. Every model you will hear about this year,
+> measure how wrong, find which way is downhill, step, repeat. The name for it is **gradient
+> descent**, and the hill is the loss. Every model you will hear about this year,
 > including the large language models, is some version of those four lines run a few
 > billion times on more data. The library call in block 4 did exactly this.
 """)
@@ -508,8 +511,8 @@ def train_torch(model, epochs, lr, log_at=()):
     for epoch in range(1, epochs + 1):
         optimizer.zero_grad()
         loss = criterion(model(Xt), Yt)     # 1 + 2: predict, how wrong
-        loss.backward()                     # 3: gradient, done for you
-        optimizer.step()                    # 4: move the weights
+        loss.backward()                     # 3: which way is downhill, worked out for you
+        optimizer.step()                    # 4: take the step
         if epoch in log_at:
             print(f"epoch {epoch:>3}  loss {loss.item():.4f}")
     with torch.no_grad():
