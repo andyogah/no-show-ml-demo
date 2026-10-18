@@ -24,7 +24,10 @@ def code(text: str) -> None:
     cells.append(nbf.v4.new_code_cell(text.strip()))
 
 
-def image(filename: str, width: int = 1000) -> None:
+INTRO_WIDTH = 1050  # one display width for every Part 1 figure, so slides do not jump between cells
+
+
+def image(filename: str, width: int = INTRO_WIDTH) -> None:
     """A code cell that displays a pre-rendered figure, with its input collapsed in JupyterLab."""
     cell = nbf.v4.new_code_cell(f'Image(filename="../docs/figures/{filename}", width={width})')
     cell.metadata["jupyter"] = {"source_hidden": True}
@@ -44,7 +47,7 @@ from IPython.display import Image
 """)
 cells[-1].metadata["jupyter"] = {"source_hidden": True}
 
-image("00a-wordcloud-grey.png", 1100)
+image("00a-wordcloud-grey.png")
 
 md("""
 > *Which of these has someone asked you about this month?*
@@ -52,7 +55,7 @@ md("""
 > *If you had to sort them into piles, how many piles?*
 """)
 
-image("00-wordcloud.png", 1100)
+image("00-wordcloud.png")
 
 md("""
 ## Six colours, six ideas
@@ -78,7 +81,7 @@ md("""
 ## One idea under most of them
 """)
 
-image("00b-equation.png", 950)
+image("00b-equation.png")
 
 md("""
 Everything on that picture is one of five things: that equation, how you find its numbers,
@@ -107,7 +110,7 @@ md("""
 ## What the data says
 """)
 
-image("01-line.png", 900)
+image("01-line.png")
 
 md("""
 Every dot is a group of appointments. The further out it was booked, the more people did not
@@ -118,7 +121,7 @@ md("""
 ## Draw a line through it
 """)
 
-image("02-line-fitted.png", 900)
+image("02-line-fitted.png")
 
 md("""
 **b** is where the line starts: the no-show rate for someone booked today.
@@ -136,7 +139,7 @@ md("""
 ## More inputs, more m's
 """)
 
-image("04-weighted-sum.png", 1000)
+image("04-weighted-sum.png")
 
 md("""
 Each thing that matters gets its own m. The m's are what people call **weights**.
@@ -147,7 +150,7 @@ md("""
 ## Squash it
 """)
 
-image("03-squashed.png", 900)
+image("03-squashed.png")
 
 md("""
 A straight line has one problem: book far enough out and it predicts that a hundred and ten
@@ -159,7 +162,7 @@ md("""
 ## Stack it
 """)
 
-image("05-stack-it.png", 1150)
+image("05-stack-it.png")
 
 md("""
 The first three are the same equation all the way down. Trees are the other popular family:
@@ -681,7 +684,7 @@ code("""
 fpr, tpr, _ = roc_curve(y_test, proba_test)
 prec, rec, _ = precision_recall_curve(y_test, proba_test)
 
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(9, 3.8))
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(11, 3.8))
 a1.plot(fpr, tpr, color=BLUE, lw=2, label="model")
 a1.plot([0, 1], [0, 1], color=GRAY, lw=1, ls="--", label="coin flip")
 a1.set(xlabel="False positive rate", ylabel="True positive rate (recall)")
@@ -891,7 +894,7 @@ compare.round(3)
 """)
 
 code("""
-fig, ax = plt.subplots(figsize=(7, 3.4))
+fig, ax = plt.subplots(figsize=(7, 3.6))
 bins = np.arange(0, 125, 5)
 ax.hist(test.lead_time_days, bins=bins, density=True, color=BLUE, alpha=0.85, label="validated on")
 ax.hist(future.lead_time_days, bins=bins, density=True, color=ORANGE, alpha=0.7, label="arriving now")
