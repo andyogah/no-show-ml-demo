@@ -48,7 +48,7 @@ GROUPS = {
         "machine learning": 70, "supervised": 28, "unsupervised": 24, "classification": 30,
         "regression": 32, "feature": 26, "label": 22, "training": 36, "overfitting": 26,
         "gradient boosting": 22, "random forest": 20, "k-nearest neighbours": 16, "clustering": 20,
-        "MLOps": 22, "drift": 24, "model": 30, "weights": 22,
+        "MLOps": 22, "drift": 24, "model": 30, "weights": 22, "logistic regression": 28,
     },
     "#1baf7a": {  # deep learning
         "deep learning": 55, "neural network": 45, "transformer": 34, "attention": 24,
@@ -63,7 +63,7 @@ GROUPS = {
     "#e87ba4": {  # statistics
         "statistics": 48, "probability": 30, "base rate": 24, "bias": 30, "variance": 22,
         "confidence interval": 20, "p-value": 22, "sampling": 18, "correlation": 24,
-        "precision": 22, "recall": 22, "ROC curve": 18, "logistic regression": 28,
+        "precision": 22, "recall": 22, "ROC curve": 18,
     },
     "#6250d6": {  # agents
         "agent": 44, "agentic AI": 42, "multi-agent": 26, "MCP": 24, "tool calling": 22,
