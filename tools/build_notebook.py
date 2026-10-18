@@ -441,8 +441,8 @@ md("""
 md("""
 ## Block 4b. What `fit()` is actually doing (6 min)
 
-`fit()` is not magic. For logistic regression it is ten lines: a prediction, a loss, a gradient,
-an update, in a loop. Here it is in NumPy on the same data, then the same loop in PyTorch, then
+`fit()` is not magic. For logistic regression it is ten lines: predict, how wrong, which way is
+downhill, step, in a loop. Here it is in NumPy on the same data, then the same loop in PyTorch, then
 a small neural network to see whether "deep" buys anything here.
 
 First, the same preprocessing as a plain numeric matrix: one-hot the two text columns, then
@@ -704,8 +704,7 @@ print(f"  accuracy {r['accuracy']:.1%}")
 md("""
 ## Block 6. What is the model actually using? (trap 1, 4 min)
 
-What is the model actually using? Permutation importance: shuffle one column, see how much
-the score drops.
+Permutation importance: shuffle one column, see how much the score drops.
 """)
 
 code("""
@@ -763,8 +762,8 @@ md("""
 md("""
 ## Block 7. Does it work for everyone? (trap 2, 3 min)
 
-Does the model work equally well for everyone? Break recall out by whether the patient has a
-patient-portal account, which in real systems tracks age, language and income.
+Break recall out by whether the patient has a patient-portal account, which in real systems
+tracks age, language and income.
 """)
 
 code("""
