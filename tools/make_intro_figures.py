@@ -148,13 +148,14 @@ from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch  # noqa: 
 
 INPUTS = [("lead time", "45 days"), ("prior no-shows", "2"), ("reminder sent", "no"),
           ("distance", "30+ mi"), ("…", "")]
-fig, ax = plt.subplots(figsize=(10, 5.2))
+fig, ax = plt.subplots(figsize=(11, 6.0))
 ax.set_xlim(0, 10)
-ax.set_ylim(0, 5.2)
+ax.set_ylim(-1.0, 5.2)
 ax.axis("off")
+fig.subplots_adjust(left=0.02, right=0.98, top=0.98, bottom=0.03)
 
 x_in, x_sum, x_out = 1.6, 5.6, 8.6
-ys = np.linspace(4.5, 0.7, len(INPUTS))
+ys = np.linspace(4.5, 0.9, len(INPUTS))
 for (name, val), y_ in zip(INPUTS, ys):
     box = FancyBboxPatch((x_in - 1.4, y_ - 0.32), 2.8, 0.64, boxstyle="round,pad=0.02,rounding_size=0.12",
                          fc="white", ec=BLUE, lw=1.6)
@@ -186,9 +187,32 @@ ax.text(x_out, 2.6, "y\nno-show rate", ha="center", va="center", fontsize=12, co
 ax.text(x_in, 5.05, "inputs", ha="center", fontsize=11, color=GRAY)
 ax.text((x_in + x_sum) / 2 + 0.1, 5.05, "one m per input: the weights", ha="center", fontsize=11, color=GRAY)
 ax.text(x_out, 5.05, "output", ha="center", fontsize=11, color=GRAY)
-ax.text(5.0, 0.12, "y  =  m₁ · lead time  +  m₂ · prior no-shows  +  m₃ · reminder sent  +  m₄ · distance  +  …  +  b",
-        ha="center", fontsize=11.5, color="#0b0b0b", family="DejaVu Sans")
-fig.tight_layout()
+# The equation, large, in a band across the bottom, with the m's and b in the arrow colour so
+# the eye links each symbol to the diagram above it.
+PIECES = [("y", "#0b0b0b"), ("  =  ", GRAY), ("m₁", ORANGE), (" · lead time", "#0b0b0b"), ("  +  ", GRAY),
+          ("m₂", ORANGE), (" · prior no-shows", "#0b0b0b"), ("  +  ", GRAY), ("m₃", ORANGE),
+          (" · reminder sent", "#0b0b0b"), ("  +  ", GRAY), ("m₄", ORANGE), (" · distance", "#0b0b0b"),
+          ("  +  …  +  ", GRAY), ("b", ORANGE)]
+EQ_SIZE = 14
+fig.canvas.draw()
+renderer = fig.canvas.get_renderer()
+# measure each piece in display units, lay them out centred, then draw the band around them
+widths = []
+for text, _ in PIECES:
+    t = ax.text(0, 0, text, fontsize=EQ_SIZE, fontweight="bold", family="DejaVu Sans")
+    widths.append(t.get_window_extent(renderer).width)
+    t.remove()
+total = sum(widths)
+to_data = lambda xd: ax.transData.inverted().transform((xd, 0))[0]
+x0_disp = ax.transData.transform((5.0, 0))[0] - total / 2
+x_start, x_end = to_data(x0_disp), to_data(x0_disp + total)
+y_eq = -0.42
+ax.add_patch(FancyBboxPatch((x_start - 0.25, y_eq - 0.42), (x_end - x_start) + 0.5, 0.84,
+                            boxstyle="round,pad=0.02,rounding_size=0.14", fc="#f6f6f4", ec=GRID, lw=1.0))
+for (text, colour), w in zip(PIECES, widths):
+    ax.text(to_data(x0_disp), y_eq, text, fontsize=EQ_SIZE, fontweight="bold", color=colour, family="DejaVu Sans",
+            ha="left", va="center")
+    x0_disp += w
 fig.savefig(OUT / "04-weighted-sum.png")
 plt.close(fig)
 
