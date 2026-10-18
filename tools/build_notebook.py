@@ -44,11 +44,15 @@ from IPython.display import Image
 """)
 cells[-1].metadata["jupyter"] = {"source_hidden": True}
 
-image("00-wordcloud.png", 1100)
+image("00a-wordcloud-grey.png", 1100)
 
 md("""
 > *Which of these has someone asked you about this month?*
+>
+> *If you had to sort them into piles, how many piles?*
 """)
+
+image("00-wordcloud.png", 1100)
 
 md("""
 ## Six colours, six ideas

@@ -80,6 +80,9 @@ wc = WordCloud(width=1600, height=800, background_color="white", prefer_horizont
                font_path=str(_font) if _font else None,
                color_func=lambda word, **kw: colour_of[word]).generate_from_frequencies(freq)
 wc.to_file(str(OUT / "00-wordcloud.png"))
+# the same layout with every word in one grey: the before-picture for the colour reveal
+wc.recolor(color_func=lambda word, **kw: "#6b6a66").to_file(str(OUT / "00a-wordcloud-grey.png"))
+wc.recolor(color_func=lambda word, **kw: colour_of[word])   # restore, in case anything reuses it
 
 # Binned no-show rate by lead time: the dots every slide uses.
 bins = np.arange(0, 95, 5)

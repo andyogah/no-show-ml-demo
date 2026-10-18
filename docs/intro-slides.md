@@ -16,8 +16,8 @@ finds it, the governance section asks who owns it.
 | # | Slide | Min | Cumulative |
 |---|---|---|---|
 | 1 | Title | 0.5 | 0.5 |
-| 2 | The word cloud | 0.5 | 1 |
-| 3 | Six colours, six ideas | 2.5 | 3.5 |
+| 2 | The word cloud, grey then coloured | 1 | 1.5 |
+| 3 | Six colours, six ideas | 2.5 | 4 |
 | 4 | One idea under most of them | 0.5 | 4 |
 | 4b | One problem for the whole hour | 1 | 5 |
 | 5 | What the data says (dots) | 0.5 | 5.5 |
@@ -45,14 +45,21 @@ you why that was the easy part."
 
 ## 2. The word cloud
 
-**On screen:** `figures/00-wordcloud.png`. Eighty terms squished together, mixed sizes.
-Every term is coloured by the ring it belongs to on the definitions slide: blue for AI,
-orange for machine learning, green for deep learning, yellow for data science, pink for
-statistics, violet for agents. Nobody will notice until you tell them on slide 3, which is the
-point. The terms and weights live in `tools/make_intro_figures.py`; edit there and re-run.
+**On screen, first:** `figures/00a-wordcloud-grey.png`. Eighty terms squished together, mixed
+sizes, all one grey. Two questions under it.
 
 **Say:** Nothing for three seconds. Then: "Which of these has someone asked you about this
-month?" Let two or three people answer. Do not read the slide. Then: "Look at the colours."
+month?" Let two or three people answer. Do not read the slide. Then: "If you had to sort
+them into piles, how many piles?" Take three guesses. People say ten, twenty, "depends." Do
+not correct anyone.
+
+**On screen, second:** `figures/00-wordcloud.png`. The same layout, every term coloured by
+the idea it belongs to: blue for AI, orange for machine learning, green for deep learning,
+yellow for data science, pink for statistics, violet for agents.
+
+**Say:** "Six." Let it sit for two seconds, then scroll to the table. The room has just
+committed to a guess, which is what makes the number land. The terms and weights live in
+`tools/make_intro_figures.py`; edit there and re-run, and both pictures regenerate together.
 
 ## 3. Six colours, six ideas
 
