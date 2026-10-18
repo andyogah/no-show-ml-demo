@@ -26,12 +26,60 @@ tools/make_intro_figures.py                        draws docs/figures/ from the 
 
 ## Setup
 
-The venv lives on the local disk, not the SSD, built by the root `setup-venv.ps1`:
+Python 3.12 or newer (the pinned numpy needs 3.12). Everything else comes from `requirements.lock`,
+the exact versions the backup notebook was executed with; `requirements.txt` lists the same
+packages unpinned if you want the latest.
+
+### Option A: a standard venv in the repo
+
+Windows (PowerShell):
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.lock
+```
+
+macOS / Linux:
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.lock
+```
+
+`.venv/` is gitignored. On Linux the default PyPI wheel for torch is the CUDA build, about 2 GB;
+the demo only needs CPU, so you can install the small build first and let the lock file skip it:
+
+```bash
+pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.lock
+```
+
+### Option B: the author's portable-SSD layout
+
+The repo is kept on an exFAT SSD that moves between machines, so the venv lives on each machine's
+local disk instead, built by the root-level `setup-venv.ps1` (not part of this repo):
 
 ```powershell
 ..\setup-venv.ps1 no-show-ml-demo
 & "$env:LOCALAPPDATA\repo-venvs\no-show-ml-demo\Scripts\Activate.ps1"
 ```
+
+### Pick the kernel
+
+- **JupyterLab**: start it from the activated venv (`jupyter lab notebooks/no_show_classic_ml.ipynb`).
+  The default "Python 3" kernel is the venv itself.
+- **VS Code**: open this repo folder as the workspace, click **Select Kernel** in the notebook
+  toolbar, then **Python Environments** and choose `.venv`. VS Code only auto-discovers venvs
+  inside the workspace. If yours lives elsewhere, as in Option B, or you opened a parent folder,
+  either add the venv's parent folder to the `python-envs.globalSearchPaths` user setting (the
+  setup script does this), or register the venv as a named kernel and pick it under
+  **Jupyter Kernel...**:
+
+  ```powershell
+  python -m ipykernel install --user --name no-show-ml-demo --display-name "Python (no-show-ml-demo)"
+  ```
 
 ## Rehearse
 
