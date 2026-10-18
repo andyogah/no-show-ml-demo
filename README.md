@@ -16,9 +16,12 @@ on a managed laptop.
 notebooks/no_show_classic_ml.ipynb                 the demo, clean (no outputs); open this live
 notebooks/backup/no_show_classic_ml_prerun.ipynb   same notebook, already executed; open if the kernel dies
 notebooks/backup/no_show_classic_ml_prerun.html    every output with charts inline; source for backup slides
+docs/intro-slides.md                               the ten-minute intro, slide by slide, ending on the handoff
 docs/talk-track.md                                 per-block timing, talking points, and the two live changes
+docs/figures/                                      the y = mx + b figures for the intro slides
 tools/build_notebook.py                            the notebook as code; edit this, not the .ipynb
 tools/run_backup.py                                executes the notebook headless and refreshes notebooks/backup/
+tools/make_intro_figures.py                        draws docs/figures/ from the notebook's own generator
 ```
 
 ## Setup
