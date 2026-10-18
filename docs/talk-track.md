@@ -22,8 +22,8 @@ every output for backup slides.
 | 4 Train a baseline | 3 | 10 | "Is 83% good?" |
 | 4b What fit() is doing | 6 | 16 | Training is the nudging loop from the intro; deep is not automatically better |
 | 5 Evaluate properly (live change 1) | 6 | 22 | The clinic picks the threshold, not the model |
-| 6 Trap 1: the answer key | 4 | 26 | Target leakage. The data engineer is worth more than the model |
-| 7 Trap 2: the group the data forgot | 3 | 29 | The model learned the process, not the patient |
+| 6 What is the model using? (trap 1) | 4 | 26 | Target leakage. The data engineer is worth more than the model |
+| 7 Does it work for everyone? (trap 2) | 3 | 29 | The model learned the process, not the patient |
 | 8 Ship it, sort of (trap 3, live change 2) | 3 | 32 | Who is watching this number in month three? |
 
 Running long: cut block 7 first, then the neural-network cell in 4b. Blocks 5, 6 and 8 are
@@ -35,15 +35,15 @@ the talk.
 `reminder_confirmed` only if someone asks; otherwise it is the surprise for block 6.
 Say: "This is the step that takes 20 seconds here and four months in real life."
 
-**2. Look at the data.** Sample rows, the overall rate, rate by department, one chart.
-Say the base rate out loud: about 18%, so "everyone shows up" is 82% accurate. Plant it.
+**2. Look at the data.** Sample rows, then the rate cell prints 18%. Only then the talking
+point: "everyone shows up" is 82% accurate. Plant it. Then the chart.
 
 **3. Frame the prediction.** Predicting what, for whom, what happens with the answer. Then the
 split by date. Say: "A random shuffle leaks the future into the past. Most tutorial models
 cheat here without meaning to."
 
-**4. Train a baseline.** Two models, seconds each. Accuracy prints at about 83%. Pause.
-"Is that good?" Let it sit. Point back at 82%.
+**4. Train a baseline.** Two models, seconds each. Accuracy prints at about 83%. Scroll to
+the one-line cell under it, "Is that good?", and stop talking. Let it sit. Point back at 82%.
 
 **4b. What fit() is doing.** Three cells, for the developers in the room. First, logistic
 regression in ten lines of NumPy: predict, how wrong, which way is downhill, step, in a loop.
@@ -65,14 +65,14 @@ nearly half the clinic) then 0.50 (flags 6%, catches one in five).
 Say: "The model does not decide the threshold. The clinic does. Reminder call, go low.
 Overbooking the slot, go high."
 
-**6. Trap 1: the answer key.** Show the honest importance chart: lead time, prior no-shows,
+**6. What is the model using? (trap 1).** Show the honest importance chart: lead time, prior no-shows,
 reminders. Then: "Someone from the front-desk system says you skipped a column." Add
 `reminder_confirmed`, retrain. Accuracy jumps to 96% and the importance chart is one orange
 bar. Say: "That field is written at check-in. It is populated after the outcome. The model
 found the answer key." Name it: target leakage. "The data engineer who knows how that field
 gets populated is worth more than the model."
 
-**7. Trap 2: the group the data forgot.** Recall by portal account. The group with the *higher* no-show rate is
+**7. Does it work for everyone? (trap 2).** Recall by portal account. The group with the *higher* no-show rate is
 the group the model catches *least*, roughly half the recall. Say: "The reminder process
 reached them less and the system recorded their history worse. The model learned the process,
 not the patient. Ship this and the reminder calls go to the people already getting reminders."

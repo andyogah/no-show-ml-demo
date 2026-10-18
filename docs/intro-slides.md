@@ -18,8 +18,8 @@ finds it, the governance section asks who owns it.
 | 1 | Title | 0.5 | 0.5 |
 | 2 | The word cloud | 0.5 | 1 |
 | 3 | One idea under all of them | 0.5 | 1.5 |
-| 4 | Six colours, six ideas | 2.5 | 4 |
-| 4b | One problem for the whole hour | 1 | 5 |
+| 4 | One problem for the whole hour | 1 | 2.5 |
+| 4b | Six colours, six ideas | 2.5 | 5 |
 | 5 | What the data says (dots) | 0.5 | 5.5 |
 | 6 | y = mx + b (the line) | 1 | 6.5 |
 | 7 | Learning is finding m and b | 0.5 | 7 |
@@ -64,10 +64,10 @@ what you feed it, what you wrap around it.*
 **Say:** "Everything on that slide is one of five things. This equation, which you learned at
 fourteen, how you find its numbers, how you judge it, what you feed it, or what you wrap
 around it." Touch the four callouts in order: "The thing you want to know. The thing you
-already know. How much the one moves the other. Where you start." Then: "And look at the
-colours: that mess is really six ideas. Two minutes to get them out of the way."
+already know. How much the one moves the other. Where you start." Then straight to the
+problem; the colours get their reveal there.
 
-## 4. Six colours, six ideas
+## 4b. Six colours, six ideas
 
 **On screen:** A six-row table, one row per colour in the word cloud, each sentence phrased
 on the no-show problem. The first three nest (deep learning inside machine learning inside
@@ -85,9 +85,10 @@ AI); the other three are what you do around a model.
 **Say:** One sentence each, no elaboration. Point at the colour in the cloud as you go if the
 cloud is still on a second screen. The data science row is the one to lean on: "that row is
 four of the six months." Hard stop at two and a half minutes. If someone wants to argue a
-definition, offer to take it in Q&A.
+definition, offer to take it in Q&A. End on the last line of the cell: "Enough words. One
+picture of the data."
 
-## 4b. One problem for the whole hour
+## 4. One problem for the whole hour
 
 **On screen:** "Outpatient appointments that do not show up." Three bullets: the cost of an
 empty chair, everyone has a theory, and the data: two years, twenty thousand appointments,
@@ -95,8 +96,8 @@ synthetic.
 
 **Say:** "Here is the problem we will use for the rest of the hour. Every one of you has seen
 it and most of you have a theory about it. The data is made up, on purpose, built to behave
-like the real thing, so nothing on this screen is anyone's record. Before any of those six
-definitions earns its keep, one picture of it."
+like the real thing, so nothing on this screen is anyone's record. Now, those colours on the
+first picture: six ideas, not eighty, and each one has a job on this problem."
 
 ## 5. What the data says
 

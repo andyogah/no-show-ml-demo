@@ -59,7 +59,22 @@ image("00b-equation.png", 950)
 md("""
 Everything on that picture is one of five things: that equation, how you find its numbers,
 how you judge it, what you feed it, or what you wrap around it. The equation is the one you
-learned at fourteen. The colours are a hint: there are six ideas up there, not eighty.
+learned at fourteen.
+""")
+
+md("""
+## One problem for the whole hour
+
+**Outpatient appointments that do not show up.**
+
+- An empty chair that someone on the waiting list could have used, a clinician's time lost,
+  and often the patient who needed the visit most.
+- Everyone in this building has a theory about why.
+- The data: two years of outpatient appointments, twenty thousand of them. Synthetic, built to
+  behave like the real thing, so nothing here is anyone's record.
+
+Now, the colours on that first picture. They are a hint: six ideas up there, not eighty, and
+each one has a job on this problem.
 """)
 
 md("""
@@ -78,20 +93,8 @@ Each one on the same problem: appointments that do not show up.
 
 The first three nest: deep learning is a kind of machine learning is a kind of AI. The other
 three are what you do around a model.
-""")
 
-md("""
-## One problem for the whole hour
-
-**Outpatient appointments that do not show up.**
-
-- An empty chair that someone on the waiting list could have used, a clinician's time lost,
-  and often the patient who needed the visit most.
-- Everyone in this building has a theory about why.
-- The data: two years of outpatient appointments, twenty thousand of them. Synthetic, built to
-  behave like the real thing, so nothing here is anyone's record.
-
-Before any definition of AI earns its keep, one picture of that data.
+Enough words. One picture of the data.
 """)
 
 md("""
@@ -102,7 +105,7 @@ image("01-line.png", 900)
 
 md("""
 Every dot is a group of appointments. The further out it was booked, the more people did not
-turn up. Everyone in this building knows that already. The question is what you do with it.
+turn up. No surprise to anyone who has run a clinic. The question is what you do with it.
 """)
 
 md("""
@@ -120,7 +123,7 @@ Give me a lead time, I give you a no-show rate. That is the whole model.
 > **Machine learning is finding m and b from the data instead of guessing them.**
 > Nobody typed those numbers. The computer tried values, measured how wrong the line was, and
 > nudged. That nudging loop is what the word *training* means. You will watch it run in about
-> ten minutes.
+> a quarter of an hour.
 """)
 
 md("""
@@ -198,6 +201,7 @@ the repository is in the last cell.
 """)
 
 code("""
+# setup: imports, seed, plot style
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -225,6 +229,7 @@ plt.rcParams.update({"figure.dpi": 110, "axes.spines.top": False, "axes.spines.r
 BLUE, ORANGE, GRAY = "#2a78d6", "#eb6834", "#52514e"
 print("ready")
 """)
+cells[-1].metadata["jupyter"] = {"source_hidden": True}
 
 # --------------------------------------------------------------------------------------
 md("""
@@ -324,9 +329,6 @@ md("""
 
 Before any modelling: what does a row look like, and how often does the thing we care about
 actually happen?
-
-> **Talking point.** The base rate is about 18%. So a "model" that says *everyone shows up*
-> is about 82% accurate. Remember that number. We will come back to it.
 """)
 
 code("""
@@ -339,6 +341,11 @@ print(f"Overall no-show rate: {base_rate:.1%}")
 print(f"'Everyone shows up' accuracy: {1 - base_rate:.1%}\\n")
 print("No-show rate by department")
 print(df.groupby("department").no_show.mean().sort_values(ascending=False).map("{:.1%}".format))
+""")
+
+md("""
+> **Talking point.** About 18% no-show. So a "model" that says *everyone shows up* is about
+> 82% accurate. Remember that number. We will come back to it.
 """)
 
 code("""
@@ -409,9 +416,6 @@ md("""
 ## Block 4. Train a baseline (3 min)
 
 Two models, both train in seconds: a logistic regression and a gradient-boosted tree.
-
-> **Is that good?** Hold it against the number from block 2: saying *everyone shows up* scores
-> 82%.
 """)
 
 code("""
@@ -423,6 +427,10 @@ for name, m in [("Logistic regression", logreg), ("Gradient boosted trees", gbt)
     print(f"{name:24s} accuracy on new appointments: {accuracy_score(y_test, m.predict(X_test)):.1%}")
 
 print(f"{'Everyone shows up':24s} accuracy on new appointments: {1 - y_test.mean():.1%}")
+""")
+
+md("""
+> **Is that good?**
 """)
 
 # --------------------------------------------------------------------------------------
@@ -690,7 +698,7 @@ print(f"  accuracy {r['accuracy']:.1%}")
 
 # --------------------------------------------------------------------------------------
 md("""
-## Block 6. Trap 1: the answer key (4 min)
+## Block 6. What is the model actually using? (trap 1, 4 min)
 
 What is the model actually using? Permutation importance: shuffle one column, see how much
 the score drops.
@@ -749,7 +757,7 @@ md("""
 
 # --------------------------------------------------------------------------------------
 md("""
-## Block 7. Trap 2: the group the data forgot (3 min)
+## Block 7. Does it work for everyone? (trap 2, 3 min)
 
 Does the model work equally well for everyone? Break recall out by whether the patient has a
 patient-portal account, which in real systems tracks age, language and income.
@@ -813,7 +821,7 @@ print(predict_one({"department": "Behavioral Health", "appt_hour": 8, "day_of_we
 """)
 
 md("""
-### Trap 3: the world moved
+### Three months later (trap 3)
 
 The clinic opened scheduling further out. Lead times stretched. Nobody told the model.
 """)
