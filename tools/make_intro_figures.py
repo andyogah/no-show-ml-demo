@@ -142,5 +142,55 @@ fig.tight_layout()
 fig.savefig(OUT / "03-squashed.png")
 plt.close(fig)
 
+# ---------------------------------------------------------------------------------------
+# 04: more inputs, more m's. The equation as a picture: inputs, one weighted arrow each, a sum.
+from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch  # noqa: E402
+
+INPUTS = [("lead time", "45 days"), ("prior no-shows", "2"), ("reminder sent", "no"),
+          ("distance", "30+ mi"), ("…", "")]
+fig, ax = plt.subplots(figsize=(10, 5.2))
+ax.set_xlim(0, 10)
+ax.set_ylim(0, 5.2)
+ax.axis("off")
+
+x_in, x_sum, x_out = 1.6, 5.6, 8.6
+ys = np.linspace(4.5, 0.7, len(INPUTS))
+for (name, val), y_ in zip(INPUTS, ys):
+    box = FancyBboxPatch((x_in - 1.4, y_ - 0.32), 2.8, 0.64, boxstyle="round,pad=0.02,rounding_size=0.12",
+                         fc="white", ec=BLUE, lw=1.6)
+    ax.add_patch(box)
+    label = f"{name}   {val}" if val else name
+    ax.text(x_in, y_, label, ha="center", va="center", fontsize=12, color="#0b0b0b")
+
+for i, y_ in enumerate(ys):
+    arrow = FancyArrowPatch((x_in + 1.45, y_), (x_sum - 0.62, 2.6 + (y_ - 2.6) * 0.12),
+                            arrowstyle="-|>", mutation_scale=14, color=GRAY, lw=1.4,
+                            shrinkA=0, shrinkB=0)
+    ax.add_patch(arrow)
+    if INPUTS[i][0] != "…":
+        xm = (x_in + 1.45 + x_sum - 0.62) / 2
+        ym = (y_ + 2.6 + (y_ - 2.6) * 0.12) / 2 + 0.17
+        ax.text(xm, ym, f"m{chr(0x2080 + i + 1)}", ha="center", va="bottom", fontsize=14, color=ORANGE,
+                fontweight="bold")
+
+ax.add_patch(Circle((x_sum, 2.6), 0.62, fc="white", ec=ORANGE, lw=2.2))
+ax.text(x_sum, 2.72, "add it up", ha="center", va="center", fontsize=12, color="#0b0b0b")
+ax.text(x_sum, 2.38, "+ b", ha="center", va="center", fontsize=14, color=ORANGE, fontweight="bold")
+
+ax.add_patch(FancyArrowPatch((x_sum + 0.64, 2.6), (x_out - 1.25, 2.6), arrowstyle="-|>",
+                             mutation_scale=16, color=GRAY, lw=1.8, shrinkA=0, shrinkB=0))
+ax.add_patch(FancyBboxPatch((x_out - 1.2, 2.2), 2.4, 0.8, boxstyle="round,pad=0.02,rounding_size=0.12",
+                            fc=BLUE, ec=BLUE))
+ax.text(x_out, 2.6, "y\nno-show rate", ha="center", va="center", fontsize=12, color="white", linespacing=1.3)
+
+ax.text(x_in, 5.05, "inputs", ha="center", fontsize=11, color=GRAY)
+ax.text((x_in + x_sum) / 2 + 0.1, 5.05, "one m per input: the weights", ha="center", fontsize=11, color=GRAY)
+ax.text(x_out, 5.05, "output", ha="center", fontsize=11, color=GRAY)
+ax.text(5.0, 0.12, "y  =  m₁ · lead time  +  m₂ · prior no-shows  +  m₃ · reminder sent  +  m₄ · distance  +  …  +  b",
+        ha="center", fontsize=11.5, color="#0b0b0b", family="DejaVu Sans")
+fig.tight_layout()
+fig.savefig(OUT / "04-weighted-sum.png")
+plt.close(fig)
+
 print(f"m = {m:.4f} per day ({m*10:.1%} per 10 days), b = {b:.1%}")
-print(f"wrote 4 figures to {OUT.relative_to(ROOT)}/")
+print(f"wrote 5 figures to {OUT.relative_to(ROOT)}/")

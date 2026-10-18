@@ -123,11 +123,13 @@ Give me a lead time, I give you a no-show rate. That is the whole model.
 
 md("""
 ## More inputs, more m's
+""")
 
-$$y = m_1 \\cdot \\text{lead time} + m_2 \\cdot \\text{prior no-shows} + m_3 \\cdot \\text{reminder sent} + m_4 \\cdot \\text{distance} + \\dots + b$$
+image("04-weighted-sum.png", 1000)
 
+md("""
 Each thing that matters gets its own m. The m's are what people call **weights**.
-A model with a billion parameters is this equation with a billion m's.
+A model with a billion parameters is this picture with a billion arrows.
 """)
 
 md("""

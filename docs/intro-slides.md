@@ -125,12 +125,15 @@ training means. You will watch it run in about twenty minutes."
 
 ## 8. More inputs, more m's
 
-**On screen:** y = m₁·lead time + m₂·prior no-shows + m₃·reminder sent + m₄·distance + ... + b.
-Then the same thing with the m's relabelled **weights**.
+**On screen:** `figures/04-weighted-sum.png`. Inputs down the left, one arrow each carrying
+its own m, an "add it up, + b" node, and the no-show rate out the right. The equation sits
+underneath in small type. This is a single neuron, though you do not say so yet.
 
 **Say:** "Lead time is not the only thing that matters. Prior no-shows, whether a reminder went
-out, how far they live. Each one gets its own m. The m's are what people call weights. A
-model with a billion parameters is this equation with a billion m's."
+out, how far they live. Each one gets its own arrow, and each arrow has its own m. The m's are
+what people call weights. A model with a billion parameters is this picture with a billion
+arrows." Point at the circle: "Everything funnels into one add-up. Remember the circle; it
+comes back in two slides."
 
 ## 9. Squash it
 
