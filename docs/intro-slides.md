@@ -26,8 +26,9 @@ finds it, the governance section asks who owns it.
 | 8 | More inputs, more m's | 0.5 | 7.5 |
 | 9 | Squash it | 0.5 | 8 |
 | 10 | Stack it | 1 | 9 |
-| 11 | The job for the next 32 minutes | 0.5 | 9.5 |
-| 12 | Handoff | 0.5 | 10 |
+| 10b | Three things under every model | 0.5 | 9.5 |
+| 11 | The job for the next 32 minutes | 0.5 | 10 |
+| 12 | Handoff | 0.5 | 10.5 |
 
 Running long at slide 4: skip straight to slide 5. The definitions are where every AI talk
 bleeds time.
@@ -157,6 +158,22 @@ the same equation all the way down. The other popular family is trees: stacked i
 instead of stacked lines. Not the equation, but found by the same loop, measure how wrong and
 take a step. In about twenty minutes you will watch a tree beat the neural network on our
 data. Someone here was going to ask, so there it is."
+
+## 10b. Three things under every model
+
+**On screen:** A three-row table: algebra gives it a shape, calculus finds the numbers,
+statistics says how wrong it is. One line under it: statistics is the one that tells you
+whether to trust any of it. One more: some AI never learns at all.
+
+**Say:** "Three things under every model you just saw. Algebra for the shape, calculus for
+the finding, statistics for the judging. Statistics is the one that tells you whether to
+trust the other two, and it is the second half of what you are about to watch. One caveat for
+the purists: some AI never learns anything. Search, rules, the scheduling optimiser. Older,
+still everywhere, and not today's subject."
+
+Call it back twice: in block 4b, the hand-written loss function is where statistics enters the
+loop, and the cell says so in a comment. At the top of block 5, say "everything from here is
+the statistics row."
 
 ## 11. The job for the next 32 minutes
 

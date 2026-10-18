@@ -159,6 +159,21 @@ minutes a tree beats the neural network on our data.
 """)
 
 md("""
+## Three things under every model
+
+| | |
+|---|---|
+| **Algebra** gives it a shape | the line, and the stacks of lines |
+| **Calculus** finds the numbers | the nudging loop: which way is downhill |
+| **Statistics** says how wrong it is | the loss, the base rate, the threshold, the bias check, the drift |
+
+Statistics is the one that tells you whether to trust any of it.
+
+Some AI never learns at all: search, rules, planning, the scheduling optimiser. Older, still
+everywhere, and not on this table.
+""")
+
+md("""
 ## The job for the next 32 minutes
 
 - Predict which outpatient appointments will be no-shows.
@@ -444,6 +459,8 @@ def sigmoid(z):
 
 
 def bce_loss(y, p, eps=1e-8):
+    # This is the statistics: how much probability the model gave to what actually happened.
+    # Low when it was confident and right, enormous when it was confident and wrong.
     p = np.clip(p, eps, 1 - eps)
     return -np.mean(y * np.log(p) + (1 - y) * np.log(1 - p))
 
@@ -540,6 +557,9 @@ md("""
 # --------------------------------------------------------------------------------------
 md("""
 ## Block 5. Evaluate properly (6 min)
+
+Everything from here on is the statistics row of the intro's table: how wrong is it, and for
+whom.
 
 Accuracy hides the thing we care about. Look at the two kinds of mistakes separately, and
 count them by hand first so nobody thinks the metric is magic either.
