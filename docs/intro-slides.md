@@ -1,9 +1,14 @@
-# Intro slides: the first ten minutes
+# Intro script: the first ten minutes
 
-Twelve slides, ten minutes, ending on the handoff into the notebook. Each slide lists what is
-on screen, what to say, and the clock. Figures referenced here are in `docs/figures/`, built
-by `tools/make_intro_figures.py` from the same synthetic data as the notebook, so every number
-on a slide matches what the room sees later.
+The intro runs **inside the notebook**, as Part 1 at the top, so there is no switching between
+a deck and JupyterLab. This file is the script for those cells: what is on screen, what to say,
+and the clock. "Slide" below means one scroll-stop in the notebook. Figures are in
+`docs/figures/`, built by `tools/make_intro_figures.py` from the same synthetic data as the
+notebook, so every number on screen matches what the room sees later. The image cells have
+their inputs collapsed; if JupyterLab shows the code, click the blue bar to the left of the
+cell.
+
+If you decide to use a deck after all, the same sequence maps one slide per section below.
 
 The spine of the whole talk is one line: **y = mx + b**. The intro draws it, the notebook
 finds it, the governance section asks who owns it.
@@ -38,13 +43,11 @@ you why that was the easy part."
 
 ## 2. The word cloud
 
-**On screen:** Forty-odd terms squished together, no hierarchy, mixed sizes. Artificial
-intelligence, machine learning, deep learning, neural network, data science, statistics,
-regression, classification, large language model, GPT, transformer, embedding, RAG, vector
-database, prompt engineering, fine-tuning, agent, agentic AI, multi-agent, MCP, copilot,
-generative AI, predictive analytics, computer vision, NLP, reinforcement learning, supervised,
-unsupervised, feature, label, training, inference, overfitting, bias, drift, MLOps,
-responsible AI, hallucination, guardrails, tokens, GPU.
+**On screen:** `figures/00-wordcloud.png`. Eighty terms squished together, mixed sizes.
+Every term is coloured by the ring it belongs to on the definitions slide: blue for AI,
+orange for machine learning, green for deep learning, yellow for data science, pink for
+statistics, violet for agents. Nobody will notice until you tell them on slide 3, which is the
+point. The terms and weights live in `tools/make_intro_figures.py`; edit there and re-run.
 
 **Say:** Nothing for three seconds. Then: "Which of these has someone asked you about this
 month?" Let two or three people answer. Do not read the slide.
@@ -54,7 +57,8 @@ month?" Let two or three people answer. Do not read the slide.
 **On screen:** The same cloud, faded to grey, with one line in the middle: **y = mx + b**.
 
 **Say:** "Nearly every word on that slide sits on one idea, and it is the one you learned at
-fourteen. Hold that thought for two minutes while we get the definitions out of the way."
+fourteen. And look at the colours: that mess is really five or six ideas. Hold that thought
+for two minutes while we get those six out of the way."
 
 ## 4. Definitions, nested
 

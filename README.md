@@ -13,12 +13,12 @@ on a managed laptop.
 ## Layout
 
 ```
-notebooks/no_show_classic_ml.ipynb                 the demo, clean (no outputs); open this live
+notebooks/no_show_classic_ml.ipynb                 the whole talk: Part 1 intro cells, Part 2 the demo; clean, open this live
 notebooks/backup/no_show_classic_ml_prerun.ipynb   same notebook, already executed; open if the kernel dies
 notebooks/backup/no_show_classic_ml_prerun.html    every output with charts inline; source for backup slides
-docs/intro-slides.md                               the ten-minute intro, slide by slide, ending on the handoff
+docs/intro-slides.md                               script for the Part 1 intro cells, with timings
 docs/talk-track.md                                 per-block timing, talking points, and the two live changes
-docs/figures/                                      the y = mx + b figures for the intro slides
+docs/figures/                                      word cloud and y = mx + b figures the intro cells display
 tools/build_notebook.py                            the notebook as code; edit this, not the .ipynb
 tools/run_backup.py                                executes the notebook headless and refreshes notebooks/backup/
 tools/make_intro_figures.py                        draws docs/figures/ from the notebook's own generator
@@ -36,6 +36,7 @@ The venv lives on the local disk, not the SSD, built by the root `setup-venv.ps1
 ## Rehearse
 
 ```powershell
+python tools/make_intro_figures.py  # redraw the intro figures (word cloud, the line) if they change
 python tools/build_notebook.py      # regenerate the .ipynb after editing the cells
 python tools/run_backup.py          # execute it end to end and refresh the backup copies
 jupyter lab notebooks/no_show_classic_ml.ipynb

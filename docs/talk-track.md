@@ -1,7 +1,7 @@
 # Talk track: the 32-minute notebook walk-through
 
-Whole-session shape for a talk that runs a little over an hour: intro and the three kinds of AI
-(10), this notebook (32), "why it takes six months to ship" (15), seeded Q&A (10). About 67.
+Whole-session shape for a talk that runs a little over an hour: the intro cells at the top of the
+notebook (10, script in intro-slides.md), the demo blocks (32), "why it takes six months to ship" (15), seeded Q&A (10). About 67.
 
 Audience: the technical breakout at an org-wide event. Developers, analysts, infra, informatics,
 a few data-curious clinicians. Not a room of ML engineers. Narrate what each block does and

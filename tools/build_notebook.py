@@ -24,9 +24,136 @@ def code(text: str) -> None:
     cells.append(nbf.v4.new_code_cell(text.strip()))
 
 
-# --------------------------------------------------------------------------------------
+def image(filename: str, width: int = 1000) -> None:
+    """A code cell that displays a pre-rendered figure, with its input collapsed in JupyterLab."""
+    cell = nbf.v4.new_code_cell(f'Image(filename="../docs/figures/{filename}", width={width})')
+    cell.metadata["jupyter"] = {"source_hidden": True}
+    cells.append(cell)
+
+
+# ======================================================================================
+# PART 1. The ten minutes before the code. Script with timings: docs/intro-slides.md
+# ======================================================================================
 md("""
-# Developing AI/ML: predicting outpatient no-shows, end to end
+# Developing AI/ML
+### What it actually takes
+""")
+
+code("""
+from IPython.display import Image
+""")
+cells[-1].metadata["jupyter"] = {"source_hidden": True}
+
+image("00-wordcloud.png", 1100)
+
+md("""
+> *Which of these has someone asked you about this month?*
+""")
+
+md("""
+## One idea under all of them
+
+# y = mx + b
+
+Nearly every word on that picture sits on the one equation you learned at fourteen.
+The colours are a hint: there are only five or six ideas up there, not sixty.
+""")
+
+md("""
+## The definitions, nested
+
+Outer ring to inner, each one on the same problem: appointments that do not show up.
+
+| | |
+|---|---|
+| **Artificial intelligence** | The computer does something that looks like judgement, such as deciding which appointments are at risk. |
+| **Machine learning** | It learned the rule from past appointments instead of a person writing the rule. |
+| **Deep learning** | The same thing with many stacked layers. Needed for images, text, speech and signals. |
+| **Agent** | A model that can also take actions, like sending the reminder, and check what happened. |
+| **Agentic AI** | Agents chained together toward a goal, choosing their own next steps. |
+| **Statistics** | The discipline of knowing how wrong you are. It shows up the moment we evaluate a model. |
+""")
+
+md("""
+## What the data says
+""")
+
+image("01-line.png", 900)
+
+md("""
+Every dot is a group of appointments. The further out it was booked, the more people did not
+turn up. Everyone in this building knows that already. The question is what you do with it.
+""")
+
+md("""
+## Draw a line through it
+""")
+
+image("02-line-fitted.png", 900)
+
+md("""
+**b** is where the line starts: the no-show rate for someone booked today.
+**m** is the slope: what each extra ten days of waiting costs.
+
+Give me a lead time, I give you a no-show rate. That is the whole model.
+
+> **Machine learning is finding m and b from the data instead of guessing them.**
+> Nobody typed those numbers. The computer tried values, measured how wrong the line was, and
+> nudged. That nudging loop is what the word *training* means. You will watch it run in about
+> twenty minutes.
+""")
+
+md("""
+## More inputs, more m's
+
+$$y = m_1 \\cdot \\text{lead time} + m_2 \\cdot \\text{prior no-shows} + m_3 \\cdot \\text{reminder sent} + m_4 \\cdot \\text{distance} + \\dots + b$$
+
+Each thing that matters gets its own m. The m's are what people call **weights**.
+A model with a billion parameters is this equation with a billion m's.
+""")
+
+md("""
+## Squash it
+""")
+
+image("03-squashed.png", 900)
+
+md("""
+A straight line has one problem: book far enough out and it predicts that a hundred and ten
+percent of people no-show. So we bend it to stay between zero and one hundred. That bent line
+is **logistic regression**, and it is the first model we train today.
+""")
+
+md("""
+## Stack it
+
+| | |
+|---|---|
+| One squashed line | logistic regression |
+| Several squashed lines feeding into another one | a neural network |
+| Many of those, stacked | deep learning: images, text, speech, signals |
+| Deep learning with a trick for attending to words in order, on an enormous amount of text | a large language model |
+
+It is the same equation all the way down. Every one of those weights was found by the same
+nudging loop.
+""")
+
+md("""
+## The problem for the next 32 minutes
+
+- Predict which outpatient appointments will be no-shows.
+- The day before, for the scheduling team.
+- Synthetic data, generated in front of you. No PHI anywhere.
+- Three traps are planted. You will see each one when the model falls into it.
+
+**Here is the loop finding m and b.**
+""")
+
+# ======================================================================================
+# PART 2. The notebook proper.
+# ======================================================================================
+md("""
+# Part 2: predicting outpatient no-shows, end to end
 
 **What this notebook is.** One prediction problem everyone in the building understands,
 walked from raw rows to a deployed-ish model in about 32 minutes. The data is synthetic and

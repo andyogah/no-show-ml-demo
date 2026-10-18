@@ -1,7 +1,8 @@
-"""Figures for the intro slides, drawn from the same synthetic data the notebook generates.
+"""Figures for the intro, drawn from the same synthetic data the notebook generates.
 
 Run:  python tools/make_intro_figures.py
-Writes docs/figures/01-line.png, 02-line-fitted.png, 03-squashed.png
+Writes docs/figures/00-wordcloud.png, 01-line.png, 02-line-fitted.png, 03-squashed.png
+The notebook's intro cells display these files.
 """
 import sys
 from pathlib import Path
@@ -29,6 +30,56 @@ df = ns["make_appointments"](20_000, np.random.default_rng(42))
 BLUE, ORANGE, GRAY, GRID = "#2a78d6", "#eb6834", "#52514e", "#e6e6e3"
 plt.rcParams.update({"figure.dpi": 160, "axes.spines.top": False, "axes.spines.right": False,
                      "font.size": 12})
+
+# ---------------------------------------------------------------------------------------
+# 00: the word cloud. Every term is coloured by the ring it belongs to on the definitions
+# slide, so the colours are the reveal: the mess on screen is really five groups.
+from wordcloud import WordCloud  # noqa: E402
+
+GROUPS = {
+    # colour              terms (weight = how big)
+    "#2a78d6": {  # AI, the outer ring
+        "AI": 100, "artificial intelligence": 40, "generative AI": 45, "large language model": 40,
+        "GPT": 30, "copilot": 25, "prompt engineering": 28, "hallucination": 22, "guardrails": 22,
+        "responsible AI": 24, "tokens": 18, "RAG": 30, "vector database": 20, "embedding": 26,
+        "computer vision": 22, "NLP": 24, "inference": 22, "GPU": 16,
+    },
+    "#eb6834": {  # machine learning
+        "machine learning": 70, "supervised": 28, "unsupervised": 24, "classification": 30,
+        "regression": 32, "feature": 26, "label": 22, "training": 36, "overfitting": 26,
+        "gradient boosting": 22, "random forest": 20, "k-nearest neighbours": 16, "clustering": 20,
+        "MLOps": 22, "drift": 24, "model": 30, "weights": 22,
+    },
+    "#1baf7a": {  # deep learning
+        "deep learning": 55, "neural network": 45, "transformer": 34, "attention": 24,
+        "backpropagation": 20, "fine-tuning": 26, "convolution": 16, "reinforcement learning": 22,
+        "parameters": 20, "layers": 18,
+    },
+    "#eda100": {  # data science
+        "data science": 50, "predictive analytics": 30, "data engineering": 24, "pipeline": 20,
+        "dashboard": 18, "feature store": 14, "ETL": 16, "data lake": 18, "notebook": 16,
+        "Python": 22, "SQL": 18, "pandas": 14,
+    },
+    "#e87ba4": {  # statistics
+        "statistics": 48, "probability": 30, "base rate": 24, "bias": 30, "variance": 22,
+        "confidence interval": 20, "p-value": 22, "sampling": 18, "correlation": 24,
+        "precision": 22, "recall": 22, "ROC curve": 18, "logistic regression": 28,
+    },
+    "#6250d6": {  # agents
+        "agent": 44, "agentic AI": 42, "multi-agent": 26, "MCP": 24, "tool calling": 22,
+        "orchestration": 20, "autonomy": 18, "workflow": 18, "planning": 16,
+    },
+}
+freq = {term: w for terms in GROUPS.values() for term, w in terms.items()}
+colour_of = {term: c for c, terms in GROUPS.items() for term in terms}
+
+_font = next((f for f in [Path("C:/Windows/Fonts/segoeuib.ttf"), Path("C:/Windows/Fonts/arialbd.ttf")]
+              if f.exists()), None)
+wc = WordCloud(width=1600, height=800, background_color="white", prefer_horizontal=0.9,
+               min_font_size=12, max_font_size=220, random_state=42, margin=6,
+               font_path=str(_font) if _font else None,
+               color_func=lambda word, **kw: colour_of[word]).generate_from_frequencies(freq)
+wc.to_file(str(OUT / "00-wordcloud.png"))
 
 # Binned no-show rate by lead time: the dots every slide uses.
 bins = np.arange(0, 95, 5)
@@ -92,4 +143,4 @@ fig.savefig(OUT / "03-squashed.png")
 plt.close(fig)
 
 print(f"m = {m:.4f} per day ({m*10:.1%} per 10 days), b = {b:.1%}")
-print(f"wrote 3 figures to {OUT.relative_to(ROOT)}/")
+print(f"wrote 4 figures to {OUT.relative_to(ROOT)}/")
