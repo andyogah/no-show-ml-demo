@@ -17,9 +17,9 @@ finds it, the governance section asks who owns it.
 |---|---|---|---|
 | 1 | Title | 0.5 | 0.5 |
 | 2 | The word cloud | 0.5 | 1 |
-| 3 | One idea under all of them | 0.5 | 1.5 |
-| 4 | One problem for the whole hour | 1 | 2.5 |
-| 4b | Six colours, six ideas | 2.5 | 5 |
+| 3 | One problem for the whole hour | 1 | 2 |
+| 4 | Six colours, six ideas | 2.5 | 4.5 |
+| 4b | One idea under most of them | 0.5 | 5 |
 | 5 | What the data says (dots) | 0.5 | 5.5 |
 | 6 | y = mx + b (the line) | 1 | 6.5 |
 | 7 | Learning is finding m and b | 0.5 | 7 |
@@ -52,22 +52,21 @@ statistics, violet for agents. Nobody will notice until you tell them on slide 3
 point. The terms and weights live in `tools/make_intro_figures.py`; edit there and re-run.
 
 **Say:** Nothing for three seconds. Then: "Which of these has someone asked you about this
-month?" Let two or three people answer. Do not read the slide.
+month?" Let two or three people answer. Do not read the slide. Then: "Before we sort that out,
+the one problem we will use for the whole hour."
 
-## 3. One idea under all of them
+## 3. One problem for the whole hour
 
-**On screen:** `figures/00b-equation.png`. **y = mx + b** very large, with a callout from
-each symbol: y is the answer, x is what you already know, m is how much x matters, b is where
-you start. Under it, one line: *the equation, how you find its numbers, how you judge it,
-what you feed it, what you wrap around it.*
+**On screen:** "Outpatient appointments that do not show up." Three bullets: the cost of an
+empty chair, everyone has a theory, and the data: two years, twenty thousand appointments,
+synthetic.
 
-**Say:** "Everything on that slide is one of five things. This equation, which you learned at
-fourteen, how you find its numbers, how you judge it, what you feed it, or what you wrap
-around it." Touch the four callouts in order: "The thing you want to know. The thing you
-already know. How much the one moves the other. Where you start." Then straight to the
-problem; the colours get their reveal there.
+**Say:** "Here is the problem we will use for the rest of the hour. Every one of you has seen
+it and most of you have a theory about it. The data is made up, on purpose, built to behave
+like the real thing, so nothing on this screen is anyone's record. Now, those colours on the
+first picture: six ideas, not eighty, and each one has a job on this problem."
 
-## 4b. Six colours, six ideas
+## 4. Six colours, six ideas
 
 **On screen:** A six-row table, one row per colour in the word cloud, each sentence phrased
 on the no-show problem. The first three nest (deep learning inside machine learning inside
@@ -85,19 +84,21 @@ AI); the other three are what you do around a model.
 **Say:** One sentence each, no elaboration. Point at the colour in the cloud as you go if the
 cloud is still on a second screen. The data science row is the one to lean on: "that row is
 four of the six months." Hard stop at two and a half minutes. If someone wants to argue a
-definition, offer to take it in Q&A. End on the last line of the cell: "Enough words. One
-picture of the data."
+definition, offer to take it in Q&A. End on the last line of the cell: "Enough words. Now
+the one idea most of them sit on."
 
-## 4. One problem for the whole hour
+## 4b. One idea under most of them
 
-**On screen:** "Outpatient appointments that do not show up." Three bullets: the cost of an
-empty chair, everyone has a theory, and the data: two years, twenty thousand appointments,
-synthetic.
+**On screen:** `figures/00b-equation.png`. **y = mx + b** very large, with a callout from
+each symbol: y is the answer, x is what you already know, m is how much x matters, b is where
+you start. Under it, one line: *the equation, how you find its numbers, how you judge it,
+what you feed it, what you wrap around it.*
 
-**Say:** "Here is the problem we will use for the rest of the hour. Every one of you has seen
-it and most of you have a theory about it. The data is made up, on purpose, built to behave
-like the real thing, so nothing on this screen is anyone's record. Now, those colours on the
-first picture: six ideas, not eighty, and each one has a job on this problem."
+**Say:** "Everything on that slide is one of five things. This equation, which you learned at
+fourteen, how you find its numbers, how you judge it, what you feed it, or what you wrap
+around it." Touch the four callouts in order: "The thing you want to know. The thing you
+already know. How much the one moves the other. Where you start." Then: "Here it is on our
+problem," and scroll to the chart.
 
 ## 5. What the data says
 

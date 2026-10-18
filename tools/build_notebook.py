@@ -51,18 +51,6 @@ md("""
 """)
 
 md("""
-## One idea under most of them
-""")
-
-image("00b-equation.png", 950)
-
-md("""
-Everything on that picture is one of five things: that equation, how you find its numbers,
-how you judge it, what you feed it, or what you wrap around it. The equation is the one you
-learned at fourteen.
-""")
-
-md("""
 ## One problem for the whole hour
 
 **Outpatient appointments that do not show up.**
@@ -94,7 +82,19 @@ Each one on the same problem: appointments that do not show up.
 The first three nest: deep learning is a kind of machine learning is a kind of AI. The other
 three are what you do around a model.
 
-Enough words. One picture of the data.
+Enough words. Now the one idea most of them sit on.
+""")
+
+md("""
+## One idea under most of them
+""")
+
+image("00b-equation.png", 950)
+
+md("""
+Everything on that picture is one of five things: that equation, how you find its numbers,
+how you judge it, what you feed it, or what you wrap around it. The equation is the one you
+learned at fourteen. Here it is on our problem.
 """)
 
 md("""
