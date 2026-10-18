@@ -79,6 +79,20 @@ three are what you do around a model.
 """)
 
 md("""
+## One problem for the whole hour
+
+**Outpatient appointments that do not show up.**
+
+- An empty chair that someone on the waiting list could have used, a clinician's time lost,
+  and often the patient who needed the visit most.
+- Everyone in this building has a theory about why.
+- The data: two years of outpatient appointments, twenty thousand of them. Synthetic, built to
+  behave like the real thing, so nothing here is anyone's record.
+
+Before any definition of AI earns its keep, one picture of that data.
+""")
+
+md("""
 ## What the data says
 """)
 
@@ -145,7 +159,7 @@ minutes a tree beats the neural network on our data.
 """)
 
 md("""
-## The problem for the next 32 minutes
+## The job for the next 32 minutes
 
 - Predict which outpatient appointments will be no-shows.
 - The day before, for the scheduling team.

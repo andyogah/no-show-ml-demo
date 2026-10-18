@@ -18,14 +18,15 @@ finds it, the governance section asks who owns it.
 | 1 | Title | 0.5 | 0.5 |
 | 2 | The word cloud | 0.5 | 1 |
 | 3 | One idea under all of them | 0.5 | 1.5 |
-| 4 | Definitions, nested | 3 | 4.5 |
-| 5 | What the data says (dots) | 0.5 | 5 |
-| 6 | y = mx + b (the line) | 1 | 6 |
-| 7 | Learning is finding m and b | 0.5 | 6.5 |
-| 8 | More inputs, more m's | 0.5 | 7 |
-| 9 | Squash it | 0.5 | 7.5 |
-| 10 | Stack it | 1 | 8.5 |
-| 11 | The problem for the next 32 minutes | 1 | 9.5 |
+| 4 | Six colours, six ideas | 2.5 | 4 |
+| 4b | One problem for the whole hour | 1 | 5 |
+| 5 | What the data says (dots) | 0.5 | 5.5 |
+| 6 | y = mx + b (the line) | 1 | 6.5 |
+| 7 | Learning is finding m and b | 0.5 | 7 |
+| 8 | More inputs, more m's | 0.5 | 7.5 |
+| 9 | Squash it | 0.5 | 8 |
+| 10 | Stack it | 1 | 9 |
+| 11 | The job for the next 32 minutes | 0.5 | 9.5 |
 | 12 | Handoff | 0.5 | 10 |
 
 Running long at slide 4: skip straight to slide 5. The definitions are where every AI talk
@@ -80,8 +81,19 @@ AI); the other three are what you do around a model.
 
 **Say:** One sentence each, no elaboration. Point at the colour in the cloud as you go if the
 cloud is still on a second screen. The data science row is the one to lean on: "that row is
-four of the six months." Hard stop at three minutes. If someone wants to argue a definition,
-offer to take it in Q&A.
+four of the six months." Hard stop at two and a half minutes. If someone wants to argue a
+definition, offer to take it in Q&A.
+
+## 4b. One problem for the whole hour
+
+**On screen:** "Outpatient appointments that do not show up." Three bullets: the cost of an
+empty chair, everyone has a theory, and the data: two years, twenty thousand appointments,
+synthetic.
+
+**Say:** "Here is the problem we will use for the rest of the hour. Every one of you has seen
+it and most of you have a theory about it. The data is made up, on purpose, built to behave
+like the real thing, so nothing on this screen is anyone's record. Before any of those six
+definitions earns its keep, one picture of it."
 
 ## 5. What the data says
 
@@ -146,7 +158,7 @@ instead of stacked lines. Not the equation, but found by the same loop, measure 
 take a step. In about twenty minutes you will watch a tree beat the neural network on our
 data. Someone here was going to ask, so there it is."
 
-## 11. The problem for the next 32 minutes
+## 11. The job for the next 32 minutes
 
 **On screen:** Four lines.
 - Predict which outpatient appointments will be no-shows.
@@ -154,9 +166,9 @@ data. Someone here was going to ask, so there it is."
 - Synthetic data, generated in front of you. No PHI anywhere.
 - Three traps. Two in the data, one after launch.
 
-**Say:** "Same problem, real code. The data is made up, on purpose, so you can take this home
-and run it. I have hidden three traps in it, the kind we find in real projects, and I will
-show you each one when the model falls into it."
+**Say:** "Same problem, real code, and you can take it home and run it. Three traps: two in
+the data, one after launch, the kind we find in real projects. I will show you each one when
+the model falls into it."
 
 ## 12. Handoff
 
