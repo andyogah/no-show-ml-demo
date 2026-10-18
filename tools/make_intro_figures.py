@@ -79,9 +79,18 @@ wc = WordCloud(width=1600, height=800, background_color="white", prefer_horizont
                min_font_size=12, max_font_size=220, random_state=42, margin=6,
                font_path=str(_font) if _font else None,
                color_func=lambda word, **kw: colour_of[word]).generate_from_frequencies(freq)
-wc.to_file(str(OUT / "00-wordcloud.png"))
+
+
+def save_cloud(cloud, name, pad=(48, 72)):
+    """Write the cloud with a white border (x, y) so it does not touch the cells above and below it
+    in GitHub / nbconvert, where the matplotlib figures get their own margins but this one would not."""
+    from PIL import ImageOps
+    ImageOps.expand(cloud.to_image(), border=pad, fill="white").save(str(OUT / name))
+
+
+save_cloud(wc, "00-wordcloud.png")
 # the same layout with every word in one grey: the before-picture for the colour reveal
-wc.recolor(color_func=lambda word, **kw: "#6b6a66").to_file(str(OUT / "00a-wordcloud-grey.png"))
+save_cloud(wc.recolor(color_func=lambda word, **kw: "#6b6a66"), "00a-wordcloud-grey.png")
 wc.recolor(color_func=lambda word, **kw: colour_of[word])   # restore, in case anything reuses it
 
 # Binned no-show rate by lead time: the dots every slide uses.
