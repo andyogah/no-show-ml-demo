@@ -48,9 +48,11 @@ the one-line cell under it, "Is that good?", and stop talking. Let it sit. Point
 
 **4b. What fit() is doing.** Three cells, for the developers in the room. First, logistic
 regression in ten lines of NumPy: predict, how wrong, which way is downhill, step, in a loop.
-Read the four comments, not the code. Run the loop, then the plot under it: the loss falling
-over 300 steps is the hill seen from the side. Then show it lands on the same AUC as
-scikit-learn to three decimals. Say: "That loop *is* training. It is the nudging from the
+Read the four comments, not the code. Run the loop and show it lands on the same AUC as
+scikit-learn to three decimals. Then the cell under it: the same loop on one input, slowed
+down, drawing as it goes. Say nothing for the six seconds it runs. The line from the intro
+starts flat and bends into place; the loss falls on the right. The m and b in the title are
+in scaled units, so do not compare them to the intro's 4% and 7 points. Say: "That loop *is* training. It is the nudging from the
 intro, and its name is gradient descent: the hill is the loss, and every step goes downhill.
 Every model you will hear about this year, including the large language models, is some
 version of those four lines run a few billion times." Second, the same loop in PyTorch; point

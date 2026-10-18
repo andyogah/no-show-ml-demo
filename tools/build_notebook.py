@@ -497,20 +497,56 @@ print(f"\\nROC AUC  by hand: {roc_auc_score(ye, p_numpy):.3f}   scikit-learn: {r
 print(f"accuracy by hand: {accuracy_score(ye, p_numpy >= 0.5):.1%}   scikit-learn: {accuracy_score(ye, p_sklearn >= 0.5):.1%}")
 """)
 
+md("""
+### The same loop, slowed down, drawing as it goes
+
+One input this time, lead time, so there is a line to watch. Everything else is the four
+lines above. Left: the line from the intro, starting flat and bending into place as m and b
+are nudged. Right: the hill seen from the side.
+""")
+
 code("""
-# The hill, seen from the side: how wrong we were at each step of the walk down.
-fig, ax = plt.subplots(figsize=(7, 3.2))
-ax.plot(range(1, len(history) + 1), history, color=BLUE, lw=2)
-ax.scatter([1, 10, 50, 100, 300], [history[i - 1] for i in (1, 10, 50, 100, 300)], color=ORANGE, s=36, zorder=3)
-for i in (1, 10, 50):
-    ax.annotate(f"step {i}", (i, history[i - 1]), xytext=(8, 6), textcoords="offset points", fontsize=9, color=GRAY)
-ax.set_title("Walking downhill: the loss at every step", loc="left")
-ax.set_xlabel("Step")
-ax.set_ylabel("Loss (how wrong)")
-ax.grid(color="#e6e6e3", lw=0.8)
-ax.set_axisbelow(True)
-plt.tight_layout()
-plt.show()
+import time
+from IPython.display import clear_output, display
+
+# one input: lead time, scaled the same way as above
+x_raw = train.lead_time_days.to_numpy().astype(float)
+x_mu, x_sd = x_raw.mean(), x_raw.std()
+x1 = (x_raw - x_mu) / x_sd
+
+# the dots from the intro: no-show rate per 5-day bucket
+_b = (train.lead_time_days // 5) * 5 + 2.5
+_dots = train.groupby(_b).no_show.agg(["mean", "size"])
+_dots = _dots[(_dots["size"] > 50) & (_dots.index < 90)]
+_grid = np.linspace(0, 90, 200)
+
+m1, b1, lr1, hist1 = 0.0, 0.0, 0.12, []     # smaller steps than above, so the walk is visible
+fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 3.8))
+for step in range(1, 301):
+    p1 = sigmoid(m1 * x1 + b1)                  # 1. predict
+    hist1.append(bce_loss(yt, p1))              # 2. how wrong
+    dz1 = (p1 - yt) / len(yt)                   # 3. which way is downhill
+    m1 -= lr1 * (x1 @ dz1)                      # 4. step
+    b1 -= lr1 * dz1.sum()
+    if step % 10 == 0 or step == 1:
+        axL.clear(); axR.clear()
+        axL.scatter(_dots.index, _dots["mean"], s=50, color=BLUE, zorder=3)
+        axL.plot(_grid, sigmoid(m1 * (_grid - x_mu) / x_sd + b1), color=ORANGE, lw=2.5)
+        axL.set(xlim=(0, 90), ylim=(0, 0.8), xlabel="Lead time (days)", ylabel="Share who no-show")
+        axL.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0%}"))
+        axL.set_title(f"Step {step}:  m = {m1:+.2f}   b = {b1:+.2f}", loc="left")
+        axR.plot(range(1, len(hist1) + 1), hist1, color=BLUE, lw=2)
+        axR.scatter([len(hist1)], [hist1[-1]], color=ORANGE, s=40, zorder=3)
+        axR.set(xlim=(0, 300), ylim=(0.35, 0.72), xlabel="Step", ylabel="Loss (how wrong)")
+        axR.set_title("Walking downhill", loc="left")
+        for a in (axL, axR):
+            a.grid(color="#e6e6e3", lw=0.8); a.set_axisbelow(True)
+        fig.tight_layout()
+        clear_output(wait=True)
+        display(fig)
+        time.sleep(0.12)
+plt.close(fig)
+print(f"after 300 steps: m = {m1:+.3f}, b = {b1:+.3f}   loss {hist1[-1]:.4f}")
 """)
 
 md("""
