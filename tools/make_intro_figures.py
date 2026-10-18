@@ -192,5 +192,84 @@ fig.tight_layout()
 fig.savefig(OUT / "04-weighted-sum.png")
 plt.close(fig)
 
+# ---------------------------------------------------------------------------------------
+# 05: stack it. Four panels: one squashed line, a few feeding one, many stacked, and a tree.
+fig, axes = plt.subplots(1, 4, figsize=(15, 4.6), gridspec_kw={"width_ratios": [1, 1.15, 1.5, 1.35]})
+
+
+def draw_network(ax, layers, title, subtitle, n_inputs=4):
+    """layers: list of node counts per hidden/output layer, e.g. [1] or [3, 1] or [4, 4, 4, 1]."""
+    ax.set_xlim(-0.2, len(layers) + 1.2)
+    ax.set_ylim(-0.6, 5.3)
+    ax.axis("off")
+    cols = [np.linspace(3.4, 0.6, n_inputs)]                       # input column y positions
+    for n in layers:
+        cols.append(np.linspace(2.0 + 0.5 * (n - 1), 2.0 - 0.5 * (n - 1), n) if n > 1 else np.array([2.0]))
+    xs_ = list(range(len(cols)))
+    # inputs as small blue squares
+    for y_ in cols[0]:
+        ax.add_patch(FancyBboxPatch((xs_[0] - 0.14, y_ - 0.14), 0.28, 0.28, boxstyle="round,pad=0.01,rounding_size=0.04",
+                                    fc=BLUE, ec=BLUE))
+    # edges then nodes
+    for li in range(1, len(cols)):
+        for y0 in cols[li - 1]:
+            for y1 in cols[li]:
+                ax.plot([xs_[li - 1] + (0.16 if li == 1 else 0.26), xs_[li] - 0.26], [y0, y1], color=GRAY, lw=0.9,
+                        alpha=0.75, zorder=1)
+        for y1 in cols[li]:
+            ax.add_patch(Circle((xs_[li], y1), 0.26, fc="white", ec=ORANGE, lw=1.8, zorder=2))
+            # a tiny sigmoid glyph inside each node
+            t = np.linspace(-3, 3, 30)
+            ax.plot(xs_[li] + t / 3 * 0.15, y1 + (1 / (1 + np.exp(-t)) - 0.5) * 0.26, color=ORANGE, lw=1.4, zorder=3)
+    # output arrow
+    last_x, last_y = xs_[-1], cols[-1][0]
+    ax.add_patch(FancyArrowPatch((last_x + 0.28, last_y), (last_x + 0.95, last_y), arrowstyle="-|>",
+                                 mutation_scale=12, color=GRAY, lw=1.4, shrinkA=0, shrinkB=0))
+    ax.text(last_x + 1.0, last_y - 0.45, "y", ha="right", fontsize=11, color=GRAY)
+    ax.set_title(title, loc="left", fontsize=13, fontweight="bold", color="#0b0b0b")
+    ax.text(-0.15, 5.05, subtitle, fontsize=10.5, color=GRAY, va="top")
+
+
+draw_network(axes[0], [1], "One squashed line", "logistic regression\nthe circle from two slides ago")
+draw_network(axes[1], [3, 1], "A few feeding one", "a neural network")
+draw_network(axes[2], [4, 4, 4, 1], "Many, stacked", "deep learning: images, text, speech, signals\n+ a trick for attending to words in order = an LLM")
+
+# the tree panel
+ax = axes[3]
+ax.set_xlim(0, 10)
+ax.set_ylim(-0.6, 5.3)
+ax.axis("off")
+ax.set_title("Stacked if-thens", loc="left", fontsize=13, fontweight="bold", color="#0b0b0b")
+ax.text(0.1, 5.05, "trees: random forests, gradient boosting\nnot lines, but found by the same loop", fontsize=10.5,
+        color=GRAY, va="top")
+
+
+def node(x, y, text, leaf=False):
+    w, h = (3.2, 0.62) if not leaf else (1.5, 0.55)
+    ax.add_patch(FancyBboxPatch((x - w / 2, y - h / 2), w, h, boxstyle="round,pad=0.02,rounding_size=0.1",
+                                fc=(BLUE if leaf else "white"), ec=BLUE, lw=1.6, zorder=2))
+    ax.text(x, y, text, ha="center", va="center", fontsize=9.5, color=("white" if leaf else "#0b0b0b"), zorder=3)
+
+
+def edge(x0, y0, x1, y1, label):
+    ax.plot([x0, x1], [y0 - 0.3, y1 + 0.3], color=GRAY, lw=1.1, zorder=1)
+    ax.text((x0 + x1) / 2 + (0.25 if x1 > x0 else -0.25), (y0 + y1) / 2, label, fontsize=8.5, color=GRAY,
+            ha="left" if x1 > x0 else "right", va="center")
+
+
+node(5.0, 3.3, "lead time > 30 days?")
+edge(5.0, 3.3, 2.5, 2.0, "no"); edge(5.0, 3.3, 7.5, 2.0, "yes")
+node(2.5, 2.0, "prior no-shows > 0?")
+node(7.5, 2.0, "reminder sent?")
+edge(2.5, 2.0, 1.3, 0.7, "no"); edge(2.5, 2.0, 3.9, 0.7, "yes")
+edge(7.5, 2.0, 6.1, 0.7, "yes"); edge(7.5, 2.0, 8.7, 0.7, "no")
+node(1.3, 0.7, "9%", leaf=True); node(3.9, 0.7, "21%", leaf=True)
+node(6.1, 0.7, "33%", leaf=True); node(8.7, 0.7, "58%", leaf=True)
+ax.text(5.0, -0.35, "× hundreds of small trees, added up", ha="center", fontsize=10.5, color=ORANGE, fontweight="bold")
+
+fig.tight_layout(w_pad=1.5)
+fig.savefig(OUT / "05-stack-it.png")
+plt.close(fig)
+
 print(f"m = {m:.4f} per day ({m*10:.1%} per 10 days), b = {b:.1%}")
-print(f"wrote 5 figures to {OUT.relative_to(ROOT)}/")
+print(f"wrote 6 figures to {OUT.relative_to(ROOT)}/")

@@ -146,18 +146,14 @@ is **logistic regression**, and it is the first model we train today.
 
 md("""
 ## Stack it
+""")
 
-| | |
-|---|---|
-| One squashed line | logistic regression |
-| Several squashed lines feeding into another one | a neural network |
-| Many of those, stacked | deep learning: images, text, speech, signals |
-| Deep learning with a trick for attending to words in order, on an enormous amount of text | a large language model |
-| Stacked if-thens instead of stacked lines, hundreds of them added up | trees: random forests, gradient boosting |
+image("05-stack-it.png", 1150)
 
-The first four are the same equation all the way down. Trees are the other popular family,
-and they are found by the same nudging loop: measure how wrong, take a step. In about twenty
-minutes a tree beats the neural network on our data.
+md("""
+The first three are the same equation all the way down. Trees are the other popular family:
+not lines, but found by the same nudging loop, measure how wrong and take a step. In about
+twenty minutes a tree beats the neural network on our data.
 """)
 
 md("""

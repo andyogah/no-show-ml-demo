@@ -146,13 +146,11 @@ line is logistic regression, and it is the first model we train today."
 
 ## 10. Stack it
 
-**On screen:** Rows, building down:
-1. one squashed line (logistic regression)
-2. several squashed lines feeding into another squashed line (a neural network)
-3. many of those stacked (deep learning), with the words "images, text, speech, signals"
-4. the same with a trick for attending to words in order (a large language model)
-5. stacked if-thens instead of stacked lines, hundreds added up (trees: random forests,
-   gradient boosting)
+**On screen:** `figures/05-stack-it.png`. Four panels left to right: one squashed circle
+(logistic regression, the circle from two slides ago), a few circles feeding one (a neural
+network), many stacked (deep learning, with the LLM as "plus a trick for attending to words in
+order"), and a small decision tree with "times hundreds of small trees, added up" under it.
+Walk left to right with your hand.
 
 **Say:** "Stack a few of those bent lines so the output of one feeds the next, and you have a
 neural network. Stack a lot, and you have deep learning. The large language models are this,
