@@ -21,12 +21,12 @@ every output for backup slides.
 | 3 Frame the prediction | 2 | 7 | Split by time, not at random |
 | 4 Train a baseline | 3 | 10 | "Is 83% good?" |
 | 4b What fit() is doing | 6 | 16 | Training is the nudging loop from the intro; deep is not automatically better |
-| 5 Evaluate properly (live change 1) | 6 | 22 | The clinic picks the threshold, not the model |
-| 6 What is the model using? (trap 1) | 4 | 26 | Target leakage. The data engineer is worth more than the model |
-| 7 Does it work for everyone? (trap 2) | 3 | 29 | The model learned the process, not the patient |
-| 8 Ship it, sort of (trap 3, live change 2) | 3 | 32 | Who is watching this number in month three? |
+| 5 Evaluate properly (live change 1) | 7 | 23 | The clinic picks the threshold, not the model |
+| 6 What is the model using? (trap 1) | 4 | 27 | Target leakage. The data engineer is worth more than the model |
+| 7 Does it work for everyone? (trap 2) | 3 | 30 | The model learned the process, not the patient |
+| 8 Ship it, sort of (trap 3, live change 2) | 3 | 33 | Who is watching this number in month three? |
 
-Running long: cut block 7 first, then the neural-network cell in 4b. Blocks 5, 6 and 8 are
+Running long: cut block 7 first, then the neural-network cell in 4b, then the ROC animation in 5. Blocks 5, 6 and 8 are
 the talk.
 
 ## Block by block
@@ -62,8 +62,13 @@ model's while its test score is worse. Say: "It memorised the training set. Pick
 the data, not for the press release." Cut the third cell if running long.
 
 **5. Evaluate properly.** Count true and false positives by hand first, two divisions, and
-show accuracy from block 4 falling out of the same four numbers. Then the library report, the
-confusion matrix, the two curves, and the sweep table. **Live change 1:** edit `THRESHOLD`, re-run. Try 0.15 (catches three quarters, flags
+show accuracy from block 4 falling out of the same four numbers. Then the library report and the
+confusion matrix. **ROC animation (1 min):** the threshold line slides down the score histogram and
+each stop becomes one dot on the right; the dots are the ROC curve, the shading is the AUC. Say:
+"The curve is the threshold sweep, drawn. Every dot is a clinic policy." The by-hand area matches
+`roc_auc_score`, and the last line gives AUC its meaning: pick a real no-show and a real show-up at
+random, 0.76 is how often the model ranked them the right way round. "It measures how well the model
+sorts, not how well it decides." Then the library curves and the sweep table. **Live change 1:** edit `THRESHOLD`, re-run. Try 0.15 (catches three quarters, flags
 nearly half the clinic) then 0.50 (flags 6%, catches one in five).
 Say: "The model does not decide the threshold. The clinic does. Reminder call, go low.
 Overbooking the slot, go high."

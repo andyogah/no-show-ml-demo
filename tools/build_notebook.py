@@ -662,7 +662,7 @@ print(f"accuracy  = (tp + tn) / all = {(tp + tn) / len(y):.3f}   <-- the number 
 """)
 
 md("""
-Same numbers from the library, plus the curves.
+Same numbers from the library, plus the confusion matrix as a picture.
 """)
 
 code("""
@@ -678,6 +678,89 @@ ConfusionMatrixDisplay.from_predictions(y_test, model.predict(X_test), display_l
 ax.set_title("Default threshold (0.5)", loc="left")
 plt.tight_layout()
 plt.show()
+""")
+
+md("""
+### Where the ROC curve comes from: slide the threshold, one dot at a time
+
+The confusion matrix above is one threshold, 0.5. Every other threshold gives a different
+matrix. Left: every test appointment placed by the probability the model gave it, people who
+showed in grey, real no-shows in blue, and the threshold as the orange line sliding down.
+Everything to the right of the line gets flagged. Right: each threshold becomes one dot,
+recall against false-alarm rate. The dots are the ROC curve. The shaded area is the AUC.
+""")
+
+code("""
+import time
+from IPython.display import clear_output, display
+
+y = y_test.to_numpy()
+p_show, p_miss = proba_test[y == 0], proba_test[y == 1]     # scores of people who showed / who did not
+bins = np.linspace(0, 1, 41)
+ymax = max(np.histogram(p_show, bins)[0].max(), np.histogram(p_miss, bins)[0].max()) * 1.08
+
+fprs, tprs = [], []
+fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 3.8))
+# 41 thresholds spaced by score rank, so each step flags the same number of extra appointments
+for t in np.quantile(proba_test, np.linspace(1.0, 0.0, 41)):
+    flagged = proba_test >= t
+    tp = int((flagged & (y == 1)).sum())                   # flagged, and really no-showed
+    fp = int((flagged & (y == 0)).sum())                   # flagged, but turned up
+    tprs.append(tp / len(p_miss))                          # recall: caught / all real no-shows
+    fprs.append(fp / len(p_show))                          # false-alarm rate: fp / all who showed
+    area = sum((f1 - f0) * (t0 + t1) / 2 for f0, f1, t0, t1 in zip(fprs, fprs[1:], tprs, tprs[1:]))
+
+    axL.clear(); axR.clear()
+    axL.hist(p_show, bins=bins, color=GRAY, alpha=0.45, label="showed")
+    axL.hist(p_miss, bins=bins, color=BLUE, alpha=0.75, label="no-show")
+    axL.axvline(t, color=ORANGE, lw=2.5)
+    axL.set(xlim=(0, 1), ylim=(0, ymax), xlabel="Model's probability of no-show", ylabel="Appointments")
+    axL.set_title(f"Threshold {t:.2f}\\nflag {int(flagged.sum()):,}   catch {tp:,} of {len(p_miss):,} no-shows   "
+                 f"{fp:,} false alarms", loc="left", fontsize=10)
+    axL.legend(frameon=False, loc="upper right")
+    axR.plot([0, 1], [0, 1], color=GRAY, lw=1, ls="--", label="coin flip")
+    axR.fill_between(fprs, tprs, color=BLUE, alpha=0.12)
+    axR.plot(fprs, tprs, color=BLUE, lw=2)
+    axR.scatter(fprs, tprs, color=BLUE, s=16, zorder=3)
+    axR.scatter([fprs[-1]], [tprs[-1]], color=ORANGE, s=70, zorder=4)
+    axR.set(xlim=(-0.02, 1.02), ylim=(-0.02, 1.02), xlabel="False positive rate", ylabel="True positive rate (recall)")
+    axR.set_title(f"One dot per threshold\\narea so far: {area:.3f}", loc="left", fontsize=10)
+    axR.legend(frameon=False, loc="lower right")
+    for a in (axL, axR):
+        a.grid(color="#e6e6e3", lw=0.8); a.set_axisbelow(True)
+    fig.tight_layout()
+    clear_output(wait=True)
+    display(fig)
+    time.sleep(0.12)
+plt.close(fig)
+
+# same recipe at every threshold the data allows, then compare with the library
+f_all, t_all = [], []
+for t in np.r_[1.01, np.sort(np.unique(proba_test))[::-1], 0.0]:
+    flagged = proba_test >= t
+    t_all.append((flagged & (y == 1)).sum() / len(p_miss))
+    f_all.append((flagged & (y == 0)).sum() / len(p_show))
+auc_hand = sum((f1 - f0) * (t0 + t1) / 2 for f0, f1, t0, t1 in zip(f_all, f_all[1:], t_all, t_all[1:]))
+print(f"area under the dots, by hand: {auc_hand:.3f}   roc_auc_score: {roc_auc_score(y, proba_test):.3f}")
+
+# what the number means: pick a real no-show and a real show-up at random; how often did the no-show score higher?
+_rng = np.random.default_rng(0)
+a, b = _rng.choice(p_miss, 200_000), _rng.choice(p_show, 200_000)
+print(f"share of random (no-show, showed) pairs where the no-show got the higher score: {((a > b).mean() + 0.5 * (a == b).mean()):.3f}")
+""")
+
+md("""
+> **Talking point.** The curve is not a thing the model produces. It is the threshold
+> sweep, drawn. Every point on it is a clinic policy: this many false alarms bought this
+> much recall. The area is one number for the whole curve, so it does not care where the
+> line is drawn, and it has a plain meaning: pick a real no-show and a real show-up at
+> random, and the AUC is how often the model ranked them the right way round. A coin flip
+> scores 0.5. Perfect is 1. Ours is 0.76. **It measures how well the model sorts, not
+> how well it decides.** The deciding comes next.
+""")
+
+md("""
+Same curve from the library, plus its cousin that plots precision against recall instead.
 """)
 
 code("""
